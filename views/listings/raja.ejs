@@ -1,0 +1,83 @@
+<% layout("/layouts/boilerplate") %>
+<link rel="stylesheet" href="/style/syle.css">
+<link rel="stylesheet" href="/style/mainshow.css">
+<style>
+     body {
+       background-color: #081b29;
+       
+    }
+
+    .row {
+        height: 100vh;
+        display: flex;
+        justify-content: center; /* Center the content horizontally */
+        align-items: center; /* Center the content vertically */
+    }
+
+    @media (min-width: 576px) {
+        /* Medium devices (md) and up */
+        .row {
+            height: 100vh; /* Reset height for medium and larger devices */
+        }
+    }
+
+    @media (min-width: 768px) {
+        /* Large devices (lg) and up */
+        .row {
+            height: 100vh; /* Reset height for medium and larger devices */
+        }
+        .col-8 {
+            max-width: 25rem;
+        }
+
+    }
+    @media (min-width: 450px) {
+        /* Large devices (lg) and up */
+        .row {
+            height: 100vh; /* Reset height for medium and larger devices */
+        }
+       
+
+    }
+
+    @media (min-width: 992px) {
+        /* Extra-large devices (xl) and up */
+        .row {
+            height: 100vh; /* Reset height for medium and larger devices */
+        }
+        .col-8 {
+            max-width: 25rem;
+        }
+    }
+    .card-text{
+        color: white;
+    }
+</style>
+</style>
+
+<body>
+   <div class="container-fluid">
+    <div class="row ">
+        <div class="col-8 ">
+            <div class="card" style="width: 25rem;">
+            
+                <img src="<%= raja.Image %>" class="card-img-top" alt="doner photo" style="height:20rem;">
+                <div class="card-body">
+                  <h5 class="card-text">
+                  <b> Name: </b><%= raja.Fname %>  <%= raja.Lname %>
+                    <br> <b>Descripition:</b><%= raja.Descripition %> 
+                <br>
+           <b>For:</b><%= raja.For%>
+                <br>
+               <b> Amount:</b><%= raja.Amount %> </h5>
+                <button class="btn btn-success">Send Mail</button> &nbsp; &nbsp;<button class="btn btn-info">text</button>
+                </div>
+              </div>
+        </div>
+    </div>
+   </div>
+
+
+
+
+</body>

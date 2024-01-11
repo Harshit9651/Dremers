@@ -1,0 +1,90 @@
+body{
+  background-color: #081b29;
+}
+.home{
+ 
+  padding-left: 10%;
+  background-size: cover ;
+
+
+  color: white;
+}
+.home-content{
+  max-width:600px ;
+}
+.home-content h1{
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight:700;
+
+}
+.home-content h3{
+  font-size: 32px;
+  font-weight: 700;
+  color: aqua;
+}
+.home-content p{
+  font-size: 17px;
+  margin: 20px,0,40px;
+  
+}
+
+
+.sidebar{
+  max-width: 450px;
+  background-color: aqua;
+  color: chartreuse;
+}
+.iss{
+  border-radius:  25% 75% 85% 15% / 49% 55% 45% 51% ;
+   }
+   h4,h3,p{
+     color: whitesmoke;
+   }
+   .donerr{
+      border-radius: 5rem;
+   }
+   .sec{
+     display: flex;
+     text-align: center;
+     justify-content: center;
+   }
+   .pa{
+     color:#ffffff;
+     font-size: 2.5rem;
+     font-weight: 450;
+     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+   }
+  
+   .card{
+    padding: 0;
+
+    border: none !important;
+    margin-bottom: 2rem;
+    
+     background-color:  #092a42;
+     color: bisque;
+   }
+   hr{
+     color: beige;
+     font-size: 1rem;
+   }
+   #imm {
+    height: 60vh; /* Set your desired maximum height */
+   /*Maintain image aspect ratio while covering the container */
+  }
+
+.card-img-top{
+  border-radius: 1rem!important;
+  width: 100% !important;
+  object-fit: cover!important;
+
+}
+.custom-tooltip .tooltip-inner {
+  background-color: white !important;
+  color: purple!important;
+  border-radius: 10px !important;
+}
+
+

@@ -1,0 +1,51 @@
+<% layout("/layouts/boilerplate") %>
+<link rel="stylesheet" href="/style/syle.css">
+<link rel="stylesheet" href="/style/mainshow.css">
+<style>
+       .card{
+    padding: 0;
+    border: none !important;
+    margin-bottom: 2rem;
+    background-color:  #092a42;
+    color: bisque;
+   }
+   .card-img-top{
+  border-radius: 1rem!important;
+  width: 100% !important;
+  object-fit: cover!important;
+}
+a{ text-decoration: none;
+color: white;}
+#cat{
+color: wheat;
+}
+#for{
+    color: blanchedalmond;
+}
+</style>
+<body>
+    <div class="row  row-cols-lg-4  row-cols-md-2 row-cols-sm-1">
+
+        <%for(let data of donerdata){%>
+            <a class="a-colr" href="/donerdtail/<%= data._id %>">  
+        <div class="card-col hover"  >
+            <img src= "<%=data.Image %>" class="card-img-top" style="height: 20rem ; /* here we set the all image width*/"  alt="listing image"> 
+         
+            <div class="card-body">
+                <h5 class="card-text"> 
+            <%= data.Fname %>   <%= data.Lname %>
+            <br>
+    <h5>Donation Amount:<%= data.Amount %></h5>
+    <p id="cat"><b>category:<%=data.For%></b></p>
+              
+                
+
+            </h5>
+      
+            </div>
+          </div>
+        </a>
+          <%}%>
+    
+        </div>
+</body>
