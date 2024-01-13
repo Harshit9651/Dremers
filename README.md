@@ -21,7 +21,24 @@ home page look like
 <img src="https://github.com/Harshit9651/dremers/assets/130920101/63280f2d-5b0a-4bb4-acb5-399f55f3aad4">
 <br>
 <br>
-<img src="">![Screenshot (55)](https://github.com/Harshit9651/dremers/assets/130920101/ae2cfaf4-3aba-4794-bb86-6c696536878c)
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/ae2cfaf4-3aba-4794-bb86-6c696536878c">
+<br>
+<br>
+<h3>Page 2:</h3>
+<br>
+<br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/39c11146-d456-4026-8142-6d2367346e84">
+<br>
+<br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/e65cf475-4f96-43e0-a86e-87c7fb7d44be">
+<br>
+<br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/0a1f6c0f-e2f8-49ff-8484-c9208bff907d">
+<br>
+<br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/fdf286f0-18c0-45dc-85c8-312f09526eee">
+
+
 
 
 
