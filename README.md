@@ -11,7 +11,7 @@ home page look like
 <img src="https://github.com/Harshit9651/dremers/assets/130920101/3135a283-57f7-4fa8-b378-494650388236">
 <br>
 <br>
-<h2>Doner REgistration Form</h2>
+<h2>Doner Registration Form</h2>
 
 <img src="https://github.com/Harshit9651/dremers/assets/130920101/73c17475-3642-461d-a48e-965b22dade26">
 <br>
@@ -49,12 +49,21 @@ home page look like
 <img src="https://github.com/Harshit9651/dremers/assets/130920101/bf7c0fc8-9fd0-471f-ba1b-4dc6bd9f79c6">
 <br>
 <br>
-<h3>Student Login</h3>
+<h3>Donor Login</h3>
 <hr>
 <br>
 <br>
 
-<img src="https://github.com/Harshit9651/dremers/assets/130920101/bf7c0fc8-9fd0-471f-ba1b-4dc6bd9f79c6">
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/6fa06871-92e0-4104-88c3-e5accbd15e64">
+<hr>
+<<h2>
+  Profile 
+  <hr>
+  <b>Here one important think is If you are Donor then profile show as donor and you can edit your deatails also and if you are a student then you can also do same thing</b>
+  
+</h2>
+
+
 
 
 
