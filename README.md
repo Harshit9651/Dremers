@@ -43,9 +43,10 @@ home page look like
 <br>
 <br>
 <img src="https://github.com/Harshit9651/dremers/assets/130920101/b127cc1c-a895-4cfb-aa20-5f7c62fe6cbc">
-<B>Student Login</B>
+<h3>Student Login</h3>
 <br>
 <br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/bf7c0fc8-9fd0-471f-ba1b-4dc6bd9f79c6">
 
 
 
