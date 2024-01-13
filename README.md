@@ -80,7 +80,7 @@ home page look like
 <br>
 <br>
 <hr>
-<h2 style="color=blue">Thanks For Visit In Dremers Project (Follow GitHum=>Harshit9651)</h2>
+<h2 style="color=blue">Thanks For Visit In Dremers Project <b>(Follow GitHuB=>Harshit9651)<b></b></h2>
 
 
 
