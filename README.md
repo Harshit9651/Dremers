@@ -62,7 +62,21 @@ home page look like
   <b>Here one important think is If you are Donor then profile show as donor and you can edit your deatails also and if you are a student then you can also do same thing</b>
   
 </h2>
-
+<br>
+<br>
+<h3>Profile example</h3>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/9f240673-5149-4cfe-9c71-305796e09a78">
+<br>
+<br>
+<h2>Student scholarship Section</h2>
+<h3>About:<B>In this this section after login as a student, student can access the all Scholarship details and Also Education loan suport system where some mantors can help you to providing education loan</B></h3>
+<br>
+<br>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/a2c6561f-2c17-4b77-9378-a939272cb3c2">
+<br>
+<br>
+<h2><hr></h2>
+<img src="https://github.com/Harshit9651/dremers/assets/130920101/a39abc1d-4156-4fb4-b25b-895533958a1d">
 
 
 
