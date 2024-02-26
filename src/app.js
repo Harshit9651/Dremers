@@ -1,18 +1,28 @@
 const express= require("express");
 const app = express();
-const port = 3000;
+const http = require('http')
+const port = process.env.PORT|| 3000;
+const path = require("path");
+const socketio = require('socket.io')
 const JWT = require("jsonwebtoken");
+const Filter = require('bad-words');
 const bycrpt = require("bcrypt");
+const { generateMessage, generateLocationMessage } = require('./utils/messages')
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
+const server = http.createServer(app)
+const io = socketio(server)
+const publicDirectoryPath = path.join(__dirname, '../public')
+app.use(express.static(publicDirectoryPath))
 //const authenticate = require("./dhdhd/bfbbyf.js");
 const cookieParser = require('cookie-parser');
 const session = require("express-session")
 app.use(cookieParser());
 const flash = require("connect-flash");
 require("./db/connect.js")
-app.listen(port,()=>{
+/*app.listen(port,()=>{
     console.log("server run successfully")
 })
- const path = require("path");
+*/
 
 app. use(express.json());// for parsing 
 app.use(express.urlencoded({extended:true}))//data by id aa jaye 
@@ -32,6 +42,192 @@ const bodyParser = require('body-parser');
 
 const methodoverride = require("method-override"); // for put patch and delete method
 app.use(methodoverride("_method"));
+io.on('connection', (socket) => {
+  console.log('New WebSocket connection')
+// mongo db
+socket.on('sendMessage', async (messageData, callback) => {
+  const user = getUser(socket.id);
+  if (!user) {
+      return callback('User not found');
+  }
+
+  const { content, room } = messageData;
+
+  try {
+      console.log('Attempting to save message:', messageData);
+
+      // Create a new message document
+      const newMessage = new Message({
+          content,
+          sender: user.username,
+          room
+      });
+
+      // Save the message to MongoDB
+      await newMessage.save();
+
+      console.log('Message saved:', newMessage);
+
+      // Broadcast the message to all connected clients
+      io.to(room).emit('message', newMessage);
+      callback(); // acknowledge the message
+  } catch (error) {
+      console.error('Error saving message:', error);
+      callback('Error saving message');
+  }
+});
+
+
+///monogg end
+  socket.on('join', (options, callback) => {
+      const { error, user } = addUser({ id: socket.id, ...options })
+
+      if (error) {
+          return callback(error)
+      }
+
+      socket.join(user.room)
+
+      socket.emit('message', generateMessage('Admin', 'Welcome!'))
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
+      io.to(user.room).emit('roomData', {
+          room: user.room,
+          users: getUsersInRoom(user.room)
+      })
+
+      callback()
+  })
+
+  socket.on('sendMessage', (message, callback) => {
+      const user = getUser(socket.id)
+      const filter = new Filter()
+
+      if (filter.isProfane(message)) {
+          return callback('Profanity is not allowed!')
+      }
+
+      io.to(user.room).emit('message', generateMessage(user.username, message))
+      callback()
+  })
+
+  socket.on('sendLocation', (coords, callback) => {
+      const user = getUser(socket.id)
+      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+      callback()
+  })
+
+  socket.on('disconnect', () => {
+      const user = removeUser(socket.id)
+
+      if (user) {
+          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
+          io.to(user.room).emit('roomData', {
+              room: user.room,
+              users: getUsersInRoom(user.room)
+          })
+      }
+  })
+})
+
+/*
+io.on('connection', (socket) => {
+  console.log('New WebSocket connection')
+
+  socket.on('join', (options, callback) => {
+      const { error, user } = addUser({ id: socket.id, ...options })
+
+      if (error) {
+          return callback(error)
+      }
+
+      socket.join(user.room)
+
+      socket.emit('message', generateMessage('Admin', 'Welcome!'))
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
+      io.to(user.room).emit('roomData', {
+          room: user.room,
+          users: getUsersInRoom(user.room)
+      })
+
+      callback()
+  })
+
+  socket.on('sendMessage', async (messageData, callback) => {
+      const user = getUser(socket.id);
+      if (!user) {
+          return callback('User not found');
+      }
+      
+      const { content, room } = messageData;
+
+      try {
+          const newMessage = new Message({
+              content,
+              sender: user.username,
+              room
+          });
+
+          await newMessage.save();
+          // Broadcast the message to all connected clients
+          io.to(room).emit('message', newMessage);
+          callback(); // acknowledge the message
+      } catch (error) {
+          console.error('Error saving message:', error);
+          callback('Error saving message');
+      }
+  });
+
+  socket.on('sendLocation', (coords, callback) => {
+      const user = getUser(socket.id)
+      if (!user) {
+          return callback('User not found');
+      }
+
+      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
+      callback(); // acknowledge the location message
+  });
+
+  socket.on('disconnect', () => {
+      const user = removeUser(socket.id);
+
+      if (user) {
+          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
+          io.to(user.room).emit('roomData', {
+              room: user.room,
+              users: getUsersInRoom(user.room)
+          })
+      }
+  });
+});
+
+// Endpoint to retrieve chat history
+app.get('/chat-history/:room', async (req, res) => {
+  const room = req.params.room;
+  
+  try {
+      const chatHistory = await Message.find({ room }).sort({ timestamp: 1 });
+      res.json(chatHistory);
+  } catch (error) {
+      console.error('Error fetching chat history:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+// Fetch chat history from the server
+function fetchChatHistory(room) {
+  fetch(`/chat-history/${room}`)
+      .then(response => response.json())
+      .then(chatHistory => {
+          // Display chat history in the UI
+          chatHistory.forEach(message => {
+              displayMessage(message);
+          });
+      })
+      .catch(error => console.error('Error fetching chat history:', error));
+}
+
+// Call fetchChatHistory() when users navigate to the chat history section
+// For example, after clicking on a user's profile or history button
+*/
 
 
 
@@ -40,21 +236,11 @@ const Doner = require("./models/doner.js");
 const CLOUD = require("./models/cloudn.js");
 
 
-function generateRandomWord() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let randomWord = '';
 
-  for (let i = 0; i < 5; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomWord += characters.charAt(randomIndex);
-  }
-
-  return randomWord;
-}
 
 // Example usage
-const uniqueRandomWord = generateRandomWord();
-console.log(uniqueRandomWord);
+
+
 const store = new mongodbsession({
   uri:'mongodb://127.0.0.1:27017/Dreamers',
   collection:"mysessions",
@@ -142,7 +328,7 @@ app.get('/l', async(req, res) => {
   const donerId = '658d8a5f25bf4b855f346c1a';
 //console.log(req.session.user.userId)
  const data = await Doner.find({}).limit(8);// yani desktop par 8 donor hi dikhane hai 
- const sdata = await Student.find({}).limit(8);
+ const sdata = await Student.find({}).limit(4);
 
 
       res.render('listings/index.ejs',{data,sdata,user: req.session.user });
@@ -574,5 +760,7 @@ app.get("/studentinformation/:id", async(req,res)=>{
     }
   };
 
-
+ server.listen(port, () => {
+    console.log(`Server is up on port ${port}!`)
+})
 

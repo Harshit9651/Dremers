@@ -45,3 +45,32 @@ body{
   background-color: white !important;
   color: purple !important;
 }
+/* start form here */
+@media only screen and (max-width: 768px) {
+  .navbar {
+    position: fixed; /* Navbar ko fixed position dijiye */
+    width: 100%; /* Puri screen ko cover kare */
+    z-index: 1000; /* Navbar ko sabse upar layer par rakhiye */
+  }
+
+  .navbar-collapse {
+    background-color: white; /* Navbar ke background ko white kijiye */
+    padding: 1rem; /* Padding dijiye for better readability */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for better visibility */
+  }
+
+  .navbar-nav {
+    width: 100%; /* Puri screen ko cover kare */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 1rem; /* Item ke beech ka space dijiye */
+  }
+
+  .nav-link {
+    color: black !important; /* Text color black kar dijiye */
+  }
+}

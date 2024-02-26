@@ -70,14 +70,31 @@
            <b>For:</b><%= raja.For%>
                 <br>
                <b> Amount:</b><%= raja.Amount %> </h5>
-                <button class="btn btn-success">Send Mail</button> &nbsp; &nbsp;<button class="btn btn-info">text</button>
+                <button class="btn btn-success">Send Message</button> &nbsp; &nbsp;<button class="btn btn-info">text</button>
                 </div>
               </div>
         </div>
     </div>
    </div>
 
+<!-- Add this code to your EJS file -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  // Establish connection with the server
+  const socket = io();
 
+  // Function to send a message to the donor
+  const sendMessageToDonor = () => {
+    // Here, you can implement code to prompt the user to enter the message content
+    const messageContent = prompt("Enter your message to the donor:");
+
+    // Emit the message event to the server with the message content
+    socket.emit('sendMessageToDonor', { content: messageContent });
+  };
+
+  // Add event listener to the Send Message button
+  document.querySelector('.btn-success').addEventListener('click', sendMessageToDonor);
+</script>
 
 
 </body>
