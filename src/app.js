@@ -55,6 +55,12 @@ const CLOUD = require("./models/cloudn.js");
 
 
 
+// Define the views directory
+const viewsDirectory = path.join(__dirname, 'views');
+
+// Set up the views directory for Express
+app.set('views', viewsDirectory);
+
 // Example usage
 
 
@@ -682,7 +688,3 @@ socket.on('sendMessage', async (messageData, callback) => {
   })
 })
 */ 
-app.get('/', async(req, res) => {
-  // Render a different page like a landing page or login page
-  res.render('landing_page');
-});
