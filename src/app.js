@@ -42,95 +42,11 @@ const bodyParser = require('body-parser');
 
 const methodoverride = require("method-override"); // for put patch and delete method
 app.use(methodoverride("_method"));
-io.on('connection', (socket) => {
-  console.log('New WebSocket connection')
-// mongo db
-socket.on('sendMessage', async (messageData, callback) => {
-  const user = getUser(socket.id);
-  if (!user) {
-      return callback('User not found');
-  }
 
-  const { content, room } = messageData;
 
-  try {
-      console.log('Attempting to save message:', messageData);
-
-      // Create a new message document
-      const newMessage = new Message({
-          content,
-          sender: user.username,
-          room
-      });
-
-      // Save the message to MongoDB
-      await newMessage.save();
-
-      console.log('Message saved:', newMessage);
-
-      // Broadcast the message to all connected clients
-      io.to(room).emit('message', newMessage);
-      callback(); // acknowledge the message
-  } catch (error) {
-      console.error('Error saving message:', error);
-      callback('Error saving message');
-  }
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
-
-
-///monogg end
-  socket.on('join', (options, callback) => {
-      const { error, user } = addUser({ id: socket.id, ...options })
-
-      if (error) {
-          return callback(error)
-      }
-
-      socket.join(user.room)
-
-      socket.emit('message', generateMessage('Admin', 'Welcome!'))
-      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
-      io.to(user.room).emit('roomData', {
-          room: user.room,
-          users: getUsersInRoom(user.room)
-      })
-
-      callback()
-  })
-
-  socket.on('sendMessage', (message, callback) => {
-      const user = getUser(socket.id)
-      const filter = new Filter()
-
-      if (filter.isProfane(message)) {
-          return callback('Profanity is not allowed!')
-      }
-
-      io.to(user.room).emit('message', generateMessage(user.username, message))
-      callback()
-  })
-
-  socket.on('sendLocation', (coords, callback) => {
-      const user = getUser(socket.id)
-      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
-      callback()
-  })
-
-  socket.on('disconnect', () => {
-      const user = removeUser(socket.id)
-
-      if (user) {
-          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
-          io.to(user.room).emit('roomData', {
-              room: user.room,
-              users: getUsersInRoom(user.room)
-          })
-      }
-  })
-})
-
-
-
 
 const Student = require("./models/student.js")
 const Doner = require("./models/doner.js");
@@ -225,7 +141,7 @@ app.get('/login', (req, res) => {
 
 
 
-app.get('/l', async(req, res) => {    
+app.get('/', async(req, res) => {    
  
   const donerId = '658d8a5f25bf4b855f346c1a';
 //console.log(req.session.user.userId)
@@ -324,7 +240,7 @@ const newdonerdata = await newdoner.save();
 console.log(newdonerdata);
 
 req.flash("success","New Donoer Registerd Successfully")
-res.redirect("/l")
+res.redirect("/") // pahle res.redrict("/l") tha
 
 
     })
@@ -367,14 +283,14 @@ Fname:Fname,Lname,Email,Number,username,Amount,Descripition,Countery
   const updateSave = await update.save();
   console.log(updateSave);
  
-  res.redirect("/l")
+  res.redirect("/") // pahle res.redrict("/l") tha
 });
 
 app.delete("deletdta/:id",async (req,res)=>{
   const {id} = req.body;
   const deletedoner =  Doner.findByIdAndDelete(id);
   console.log(deletedoner);
-  res.redirect("/l");
+  res.redirect("/");// pahle res.redrict("/l") tha
 })
 
    app.get('/login', (req, res) => {
@@ -409,7 +325,7 @@ app.delete("deletdta/:id",async (req,res)=>{
           req.session.user = { Role , userId: findDoner._id};
 
 console.log("hello hii name" + req.session.user.userId);
-          res.redirect("/l") 
+          res.redirect("/") // pahle res.redrict("/l") tha
         
         } 
        
@@ -451,7 +367,7 @@ console.log("hello hii name" + req.session.user.userId);
 
             req.flash("success", "Welcome to Dremers again!");
             req.session.user = { Role ,userId: findStudent._id };
-            res.redirect("/l")} }
+            res.redirect("/")} } // pahle res.redrict("/l") tha
       }
        })
        
@@ -516,7 +432,7 @@ app.get('/logout', (req, res) => {
       console.error('Error destroying session:', err);
       res.status(500).send('Error destroying session');
     } else {
-      res.redirect("/l");
+      res.redirect("/");// pahle res.redrict("/l") tha
     }
   });
 });
@@ -611,7 +527,7 @@ app.get('/logout', (req, res) => {
 
 console.log(Studnetfind)
 req.flash("success", "New Student Registerd");
-res.redirect("/l")
+res.redirect("/")  // pahle res.redrict("/l") tha
 }) 
 
 app.get("/donerdtail/:id",async(req,res)=>{
@@ -675,7 +591,98 @@ app.get("/studentinformation/:id", async(req,res)=>{
     }
   };
 
- server.listen(port, () => {
+/* server.listen(port, () => {
     console.log(`Server is up on port ${port}!`)
-})
+})*/
 
+/*io.on('connection', (socket) => {
+  console.log('New WebSocket connection')
+// mongo db
+socket.on('sendMessage', async (messageData, callback) => {
+  const user = getUser(socket.id);
+  if (!user) {
+      return callback('User not found');
+  }
+
+  const { content, room } = messageData;
+
+  try {
+      console.log('Attempting to save message:', messageData);
+
+      // Create a new message document
+      const newMessage = new Message({
+          content,
+          sender: user.username,
+          room
+      });
+
+      // Save the message to MongoDB
+      await newMessage.save();
+
+      console.log('Message saved:', newMessage);
+
+      // Broadcast the message to all connected clients
+      io.to(room).emit('message', newMessage);
+      callback(); // acknowledge the message
+  } catch (error) {
+      console.error('Error saving message:', error);
+      callback('Error saving message');
+  }
+});
+
+
+///monogg end
+  socket.on('join', (options, callback) => {
+      const { error, user } = addUser({ id: socket.id, ...options })
+
+      if (error) {
+          return callback(error)
+      }
+
+      socket.join(user.room)
+
+      socket.emit('message', generateMessage('Admin', 'Welcome!'))
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
+      io.to(user.room).emit('roomData', {
+          room: user.room,
+          users: getUsersInRoom(user.room)
+      })
+
+      callback()
+  })
+
+  socket.on('sendMessage', (message, callback) => {
+      const user = getUser(socket.id)
+      const filter = new Filter()
+
+      if (filter.isProfane(message)) {
+          return callback('Profanity is not allowed!')
+      }
+
+      io.to(user.room).emit('message', generateMessage(user.username, message))
+      callback()
+  })
+
+  socket.on('sendLocation', (coords, callback) => {
+      const user = getUser(socket.id)
+      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+      callback()
+  })
+
+  socket.on('disconnect', () => {
+      const user = removeUser(socket.id)
+
+      if (user) {
+          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
+          io.to(user.room).emit('roomData', {
+              room: user.room,
+              users: getUsersInRoom(user.room)
+          })
+      }
+  })
+})
+*/ 
+app.get('/', async(req, res) => {
+  // Render a different page like a landing page or login page
+  res.render('landing_page');
+});
