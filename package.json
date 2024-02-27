@@ -1,4 +1,7 @@
 {
+  "engines":{
+"node":"20.9.0"
+  },
   "name": "sbysss",
   "version": "1.0.0",
   "description": "",
@@ -14,6 +17,7 @@
     "call-bind": "^1.0.5",
     "cloudinary": "^1.41.1",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
     "connect-mongodb-session": "^3.1.1",
     "content-disposition": "^0.5.4",
     "content-type": "^1.0.5",
@@ -56,6 +60,7 @@
     "mime": "^1.6.0",
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
+    "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
     "ms": "^2.0.0",
     "multer": "^1.4.5-lts.1",

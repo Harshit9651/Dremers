@@ -129,105 +129,6 @@ socket.on('sendMessage', async (messageData, callback) => {
   })
 })
 
-/*
-io.on('connection', (socket) => {
-  console.log('New WebSocket connection')
-
-  socket.on('join', (options, callback) => {
-      const { error, user } = addUser({ id: socket.id, ...options })
-
-      if (error) {
-          return callback(error)
-      }
-
-      socket.join(user.room)
-
-      socket.emit('message', generateMessage('Admin', 'Welcome!'))
-      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
-      io.to(user.room).emit('roomData', {
-          room: user.room,
-          users: getUsersInRoom(user.room)
-      })
-
-      callback()
-  })
-
-  socket.on('sendMessage', async (messageData, callback) => {
-      const user = getUser(socket.id);
-      if (!user) {
-          return callback('User not found');
-      }
-      
-      const { content, room } = messageData;
-
-      try {
-          const newMessage = new Message({
-              content,
-              sender: user.username,
-              room
-          });
-
-          await newMessage.save();
-          // Broadcast the message to all connected clients
-          io.to(room).emit('message', newMessage);
-          callback(); // acknowledge the message
-      } catch (error) {
-          console.error('Error saving message:', error);
-          callback('Error saving message');
-      }
-  });
-
-  socket.on('sendLocation', (coords, callback) => {
-      const user = getUser(socket.id)
-      if (!user) {
-          return callback('User not found');
-      }
-
-      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
-      callback(); // acknowledge the location message
-  });
-
-  socket.on('disconnect', () => {
-      const user = removeUser(socket.id);
-
-      if (user) {
-          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
-          io.to(user.room).emit('roomData', {
-              room: user.room,
-              users: getUsersInRoom(user.room)
-          })
-      }
-  });
-});
-
-// Endpoint to retrieve chat history
-app.get('/chat-history/:room', async (req, res) => {
-  const room = req.params.room;
-  
-  try {
-      const chatHistory = await Message.find({ room }).sort({ timestamp: 1 });
-      res.json(chatHistory);
-  } catch (error) {
-      console.error('Error fetching chat history:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-// Fetch chat history from the server
-function fetchChatHistory(room) {
-  fetch(`/chat-history/${room}`)
-      .then(response => response.json())
-      .then(chatHistory => {
-          // Display chat history in the UI
-          chatHistory.forEach(message => {
-              displayMessage(message);
-          });
-      })
-      .catch(error => console.error('Error fetching chat history:', error));
-}
-
-// Call fetchChatHistory() when users navigate to the chat history section
-// For example, after clicking on a user's profile or history button
-*/
 
 
 
@@ -242,8 +143,8 @@ const CLOUD = require("./models/cloudn.js");
 
 
 const store = new mongodbsession({
-  uri:'mongodb://127.0.0.1:27017/Dreamers',
-  collection:"mysessions",
+ uri:'mongodb+srv://harshitdata:ramramram@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+ collection:"mysessions",
 })
 
 app.use(session({
@@ -258,6 +159,7 @@ app.use((req,res,next)=>{
   next();
 
 })
+
 /*
 const isAuth = (req,res,next)=>{
   if(req.session.isAuth){
@@ -399,8 +301,7 @@ app.post("/newdoner", upload.fields([
   const hashedPassword = await bycrpt.hash(password, saltRounds);
 
 console.log(hashedPassword);
-const hashedotp = await bycrpt.hash(uniqueRandomWord,saltRounds);
-console.log(hashedotp);
+
 
 
     const newdoner = await new Doner({
@@ -413,7 +314,7 @@ console.log(hashedotp);
       Amount:price,
       Countery:countery,
       Descripition:Descripition,
-      Randomdigit: hashedotp,
+     
       Image:IMAGE,
       For:For
      })
@@ -573,14 +474,28 @@ res.render("listings/doners.ejs",{donerdata})
         }
       })
 
-     app.get('/donor-secret', isAuthenticated, async(req, res) => {
+    /* app.get('/donor-secret', isAuthenticated, async(req, res) => {
       if (req.session && req.session.user && req.session.user.Role === 'donor') {
 const data =  await Student.find({})
         res.render("listings/students.ejs" ,{data});
       } else {
        res.render("listings/error.ejs");
       }
-    }); 
+    }); */
+    app.get("/donor-secret", isAuthenticated, async (req, res) => {
+      try {
+          if (req.session && req.session.user && req.session.user.Role === 'donor') {
+              const data = await Doner.find({}).lean(); // Use lean() for better performance
+              res.render("listings/students.ejs", { data });
+          } else {
+              res.render("listings/error.ejs");
+          }
+      } catch (error) {
+          console.error(error);
+          res.render("listings/error.ejs");
+      }
+  });
+  
     
   
                                         //doner field(end)
