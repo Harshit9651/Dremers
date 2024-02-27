@@ -55,11 +55,7 @@ const CLOUD = require("./models/cloudn.js");
 
 
 
-// Define the views directory
-const viewsDirectory = path.join(__dirname, 'views');
 
-// Set up the views directory for Express
-app.set('views', viewsDirectory);
 
 // Example usage
 
