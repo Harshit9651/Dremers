@@ -11,7 +11,7 @@ console.log("mongoose responsed sucessfully");
 //mongodb+srv://harshit9660518978:harshit9660518978@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 */
 const mongoose = require("mongoose");
-mongoose.connect('mongodb+srv://harshitdata:ramramram@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb+srv://Dremers:ramramram@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
 
 connectTimeoutMS: 30000, // Increase connection timeout to 30 seconds
 socketTimeoutMS: 45000 

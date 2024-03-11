@@ -1,4 +1,4 @@
-/*const express= require("express");
+const express= require("express");
 const app = express();
 
 const port = process.env.PORT|| 3000;
@@ -7,10 +7,8 @@ const socketio = require('socket.io')
 const JWT = require("jsonwebtoken");
 const Filter = require('bad-words');
 const bycrpt = require("bcrypt");
-const { generateMessage, generateLocationMessage } = require('./utils/messages')
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
-const server = http.createServer(app)
-const io = socketio(server)
+
+
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 //const authenticate = require("./dhdhd/bfbbyf.js");
@@ -18,15 +16,19 @@ const cookieParser = require('cookie-parser');
 const session = require("express-session")
 app.use(cookieParser());
 const flash = require("connect-flash");
-require("./db/connect.js")
-
+require("./src/db/connect.js")
+/*app.listen(port,()=>{
+    console.log("server run successfully")
+})
+*/
 
 app. use(express.json());// for parsing 
 app.use(express.urlencoded({extended:true}))//data by id aa jaye 
 app.set("view engine","ejs");
 const static_path = path.join(__dirname,"../views");//pura path dena hota hai 
 app.use(express.static(static_path));
-
+//const methodoverride = require("method-override"); // for put patch and delete method
+//app.use(methodoverride("_method"));
 const ejsmate = require("ejs-mate");
 app.engine("ejs",ejsmate)
 
@@ -45,9 +47,9 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-const Student = require("./models/student.js")
-const Doner = require("./models/doner.js");
-const CLOUD = require("./models/cloudn.js");
+const Student = require("./src/models/student.js")
+const Doner = require("./src/models/doner.js");
+const CLOUD = require("./src/models/cloudn.js");
 
 
 
@@ -59,7 +61,7 @@ const CLOUD = require("./models/cloudn.js");
 
 
 const store = new mongodbsession({
- uri:'mongodb://127.0.0.1:27017/Dreamers',
+ uri:'mongodb+srv://Dremers:ramramram@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
  collection:"mysessions",
 })
 
@@ -76,6 +78,16 @@ app.use((req,res,next)=>{
 
 })
 
+/*
+const isAuth = (req,res,next)=>{
+  if(req.session.isAuth){
+    next();
+  }else{
+    res.redirect("listings/login.ejs");
+  }
+}
+*/
+
 
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -90,6 +102,9 @@ cloudinary.config({
   api_secret: '3u2KB4BndKIcxurUbB7hz9Lsy2s'
 });
 
+// Configure MongoDB connection
+
+// Create a simple mongoose schema
 
 
 
@@ -377,7 +392,14 @@ res.render("listings/doners.ejs",{donerdata})
         }
       })
 
-
+    /* app.get('/donor-secret', isAuthenticated, async(req, res) => {
+      if (req.session && req.session.user && req.session.user.Role === 'donor') {
+const data =  await Student.find({})
+        res.render("listings/students.ejs" ,{data});
+      } else {
+       res.render("listings/error.ejs");
+      }
+    }); */
     app.get("/donor-secret", isAuthenticated, async (req, res) => {
       try {
           if (req.session && req.session.user && req.session.user.Role === 'donor') {
@@ -569,4 +591,96 @@ app.get("/studentinformation/:id", async(req,res)=>{
     } else {
       throw new Error('File buffer is undefined or null');
     }
-  };*/
+  };
+
+/* server.listen(port, () => {
+    console.log(`Server is up on port ${port}!`)
+})*/
+
+/*io.on('connection', (socket) => {
+  console.log('New WebSocket connection')
+// mongo db
+socket.on('sendMessage', async (messageData, callback) => {
+  const user = getUser(socket.id);
+  if (!user) {
+      return callback('User not found');
+  }
+
+  const { content, room } = messageData;
+
+  try {
+      console.log('Attempting to save message:', messageData);
+
+      // Create a new message document
+      const newMessage = new Message({
+          content,
+          sender: user.username,
+          room
+      });
+
+      // Save the message to MongoDB
+      await newMessage.save();
+
+      console.log('Message saved:', newMessage);
+
+      // Broadcast the message to all connected clients
+      io.to(room).emit('message', newMessage);
+      callback(); // acknowledge the message
+  } catch (error) {
+      console.error('Error saving message:', error);
+      callback('Error saving message');
+  }
+});
+
+
+///monogg end
+  socket.on('join', (options, callback) => {
+      const { error, user } = addUser({ id: socket.id, ...options })
+
+      if (error) {
+          return callback(error)
+      }
+
+      socket.join(user.room)
+
+      socket.emit('message', generateMessage('Admin', 'Welcome!'))
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
+      io.to(user.room).emit('roomData', {
+          room: user.room,
+          users: getUsersInRoom(user.room)
+      })
+
+      callback()
+  })
+
+  socket.on('sendMessage', (message, callback) => {
+      const user = getUser(socket.id)
+      const filter = new Filter()
+
+      if (filter.isProfane(message)) {
+          return callback('Profanity is not allowed!')
+      }
+
+      io.to(user.room).emit('message', generateMessage(user.username, message))
+      callback()
+  })
+
+  socket.on('sendLocation', (coords, callback) => {
+      const user = getUser(socket.id)
+      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+      callback()
+  })
+
+  socket.on('disconnect', () => {
+      const user = removeUser(socket.id)
+
+      if (user) {
+          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
+          io.to(user.room).emit('roomData', {
+              room: user.room,
+              users: getUsersInRoom(user.room)
+          })
+      }
+  })
+})
+*/ 
