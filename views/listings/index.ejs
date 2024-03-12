@@ -1,19 +1,7 @@
 
 <% layout("/layouts/boilerplate") %>
-<% if(success){ %>
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <%= success %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <script>
-    // Automatically close the alert after 5 seconds
-    setTimeout(() => {
-      document.querySelector('.alert').classList.add('d-none');
-    }, 2000);
-  </script>
-<% } %>
+
+
 <link rel="stylesheet" href="/style/syle.css">
 <link rel="stylesheet" href="/style/mainshow.css">
 
@@ -21,131 +9,194 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600&family=Rubik+Maps&display=swap" rel="stylesheet">
 <style>
   /* Custom CSS to minimize image height */
-  a{
-    text-decoration: none;
-  }
+  /* Global Styles */
+body {
+    background-color: #081b29;
+    font-family: Arial, sans-serif;
+    color: white;
+}
 
-  hr{
+hr {
     color: wheat;
     font-size: 1rem;
-  }
- 
-  body{
-  background-color: #081b29;
-}
-.home{
-margin-top: 6rem;
-  background-size: cover ;
-
-
-  color: white;
-}
-.home-content{
-  max-width:600px ;
-}
-.home-content h1{
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight:700;
-
-}
-.home-content h3{
-  font-size: 32px;
-  font-weight: 700;
-  color: aqua;
 }
 
-
-
-.sidebar{
-  max-width: 450px;
-  background-color: aqua;
-  color: chartreuse;
-}
-.iss{
-  border-radius:  25% 75% 85% 15% / 49% 55% 45% 51% ;
-   }
-   h4,h3,p{
-     color: whitesmoke;
-   }
-   .donerr{
-      border-radius: 5rem;
-   }
-   .sec{
-     display: flex;
-     text-align: center;
-     justify-content: center;
-   }
-   .pa{
-     color:#ffffff;
-     font-size: 2.5rem;
-     font-weight: 450;
-     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-
-   }
-  
-   .card{
-    padding: 0;
-
-    border: none !important;
-
-    
-     background-color:  #092a42;
-     color: bisque;
-   }
-   hr{
-     color: beige;
-     font-size: 1rem;
-   }
-   #imm {
-    height: 60vh; /* Set your desired maximum height */
-   /*Maintain image aspect ratio while covering the container */
-  }
-
-.card-img-top{
-  border-radius: 1rem!important;
-
-  object-fit: cover!important;
-
-}
-.custom-tooltip .tooltip-inner {
-  background-color: white !important;
-  color: purple!important;
-  border-radius: 10px !important;
+a {
+    text-decoration: none;
 }
 
+/* Container Styles */
+.container-fluid {
+    margin-top: 0rem;
+}
 
+/* Home Content Styles */
+.home-content {
+    max-width: 600px;
+}
 
-  .pinki{
-    color: white;
+.home-content h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.home-content h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: aqua;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    max-width: 450px;
     background-color: aqua;
-    width: 100%;
-    height: 20rem;
-    border-radius: 20px;
-  }
-  
-  .custom-tooltip .tooltip-inner {
+    color: chartreuse;
+}
+
+/* Image Styles */
+.iss {
+    border-radius: 25% 75% 85% 15% / 49% 55% 45% 51%;
+}
+
+/* Cards Styles */
+.card {
+    padding: 0;
+    border: none !important;
+    background-color: #092a42;
+    color: bisque;
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    object-fit: cover !important;
+}
+
+/* Tooltip Styles */
+.custom-tooltip .tooltip-inner {
     background-color: white !important;
     color: purple !important;
     font-weight: 400 !important;
     font-size: 1.1rem;
     border-bottom-color: aliceblue !important;
-  }
+}
 
-  .tooltip {
+.tooltip {
     border-radius: 20px !important;
     background-color: white !important;
-  }
-  
-  .custom-tooltip {
+}
+
+.custom-tooltip {
     --bs-tooltip-bg: white !important;
     border-bottom-color: white !important;
-  }
- 
+}
 
+/* Alert Styles */
+.alert.alert-success,
+.alert.alert-danger {
+    color: #fff;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: .25rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert.alert-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.alert.alert-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-warning {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.home{
+  margin-top: 5rem !important;
+}
+/* Mobile-specific Styles */
+/* Laptop Styles */
+@media (min-width: 768px) and (max-width: 991px) {
+    .home {
+        margin-left: 100px !important;
+     
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 576px) and (max-width: 767px) {
+    .home {
+        margin-left: 0.5rem;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 575px) {
+    .home {
+        margin-left: 0;
+    }
+}
+
+
+/* Positioning the icons */
+.mobile-icons {
+    display: none; /* Initially hide the icons */
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .mobile-icons a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+
+  #mobileBottomIcons a:hover {
+    background-color: #555; /* Hover background color */
+  }
 </style>
 
 <body>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <div class="container-fluid ll">
     <!--banner-->
     <div class="row home">
@@ -209,6 +260,44 @@ Students
 </div>
     <!-- container-fluid-->
     </div>
+    <div id="mobileBottomIcons">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+    </div>
+<!-- JavaScript for handling icon visibility -->
+<script>
+  let lastScrollTop = 0;
+  let isScrollingUp = false;
 
+  window.addEventListener('scroll', function() {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop) {
+      // Scroll down
+      isScrollingUp = false;
+    } else {
+      // Scroll up
+      isScrollingUp = true;
+    }
+
+    lastScrollTop = currentScroll;
+
+    // Toggle the visibility of the icons based on the scrolling direction
+    toggleMobileIcons();
+  }, false);
+
+  function toggleMobileIcons() {
+    let mobileIcons = document.getElementById('mobileBottomIcons');
+
+    if (isScrollingUp) {
+      // Scroll up, show the icons
+      mobileIcons.style.display = 'flex';
+    } else {
+      // Scroll down, hide the icons
+      mobileIcons.style.display = 'none';
+    }
+  }
+</script>
 
 </body>

@@ -7,7 +7,7 @@ const socketio = require('socket.io')
 const JWT = require("jsonwebtoken");
 const Filter = require('bad-words');
 const bycrpt = require("bcrypt");
-
+const nodemailer = require('nodemailer');
 
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
@@ -15,7 +15,9 @@ app.use(express.static(publicDirectoryPath))
 const cookieParser = require('cookie-parser');
 const session = require("express-session")
 app.use(cookieParser());
-const flash = require("connect-flash");
+
+const flash = require('connect-flash');
+app.use(flash());
 require("./src/db/connect.js")
 /*app.listen(port,()=>{
     console.log("server run successfully")
@@ -50,6 +52,7 @@ app.listen(port, () => {
 const Student = require("./src/models/student.js")
 const Doner = require("./src/models/doner.js");
 const CLOUD = require("./src/models/cloudn.js");
+const SinUp = require('./src/models/sinUp.js')
 
 
 
@@ -58,7 +61,7 @@ const CLOUD = require("./src/models/cloudn.js");
 
 
 // Example usage
-
+///////////////////////////############## Mongo Session################## //////////////////////////////////
 
 const store = new mongodbsession({
  uri:'mongodb+srv://Dremers:ramramram@cluster0.sbirrhi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
@@ -78,15 +81,7 @@ app.use((req,res,next)=>{
 
 })
 
-/*
-const isAuth = (req,res,next)=>{
-  if(req.session.isAuth){
-    next();
-  }else{
-    res.redirect("listings/login.ejs");
-  }
-}
-*/
+
 
 
 const multer = require('multer');
@@ -116,32 +111,68 @@ const storage = new CloudinaryStorage({
     allowedFormats: ['jpg', 'png'],
 });
 const mongoose = require("mongoose");
+const { AxiosHeaders } = require("axios");
 const upload = multer({ storage: storage });//kha save krna h 
-//multer({ storage: storage }).array('files', 5); // 'files' is the field name for your file input, and 5 is the maximum number of files
-// Set up a simple route for file upload
-//const upload = multer({ storage: storage }).array('files', 6);
+  
 
+const uploadToCloudinary = async (file) => {
+    if (file && file.path) {
+      //const result = await cloudinary.uploader.upload(file.buffer.toString('base64'));
+      const result = await cloudinary.uploader.upload(file.path);
+      return result.secure_url;
+    } else {
+      throw new Error('File buffer is undefined or null');
+    }
+  };
+
+
+
+///////////////////////////##############  Authentication ################## //////////////////////////////////
 let userEmail;
-const requireLogin = (req, res, next) => {
-  if (!req.session.user) {
-   // return res.redirect('/login');
-   return res.render("listings/option.ejs")
-  }
-  next();
-};
+
 const isAuthenticated = (req, res, next) => {
   if (req.session && req.session.user) {
-    return next();
+      return next();
   } else {
-    return res.render('listings/option.ejs');
+      // Redirect to the login page if the user is not authenticated
+      res.redirect('/sinin');
   }
 };
-app.get('/login', (req, res) => {
+
+
+
+///////////////////////////##############  Get resquctes ################## //////////////////////////////////////////////////////////////////////
+app.get('/sinin', (req, res) => {
   const flashMessages = req.flash();
-  res.render('listings/login.ejs', { flashMessages });
+  res.render('listings/sinin.ejs', { flashMessages });
 });
 
+app.get("/donorEdit/:id",async(req,res)=>{
+    const{id} = req.params;
+    const ddata = await Doner.findById(id)
+    console.log(ddata)
+ res.render("listings/doneredit.ejs",{ddata})
+  
+     })
 
+
+app.get("/profile",isAuthenticated, async(req,res)=>{
+  try{
+const id = req.session.user.userId; 
+if(req.session.user.Role=="donor"){
+  const find  = await Doner.findById(id);
+  res.render("listings/profiledoner.ejs",{find})
+
+}else{
+  const findd = await Student.findById(id);
+res.send("hello")
+
+  console.log(findd)
+}
+  }catch(err){
+    console.log(err);
+  }
+})
 
 app.get('/', async(req, res) => {    
  
@@ -163,10 +194,15 @@ app.get('/', async(req, res) => {
   res.render("listings/error.ejs")
  })
 
+ app.get('/sinup', (req, res) => {
+    console.log(req.flash('success')); // Log success flash messages
+    console.log(req.flash('error')); // Log error flash messages
+    res.render('listings/sinup.ejs', { messages: req.flash() });
+     
+    });
 
 
 
-// Resgister new Doner(doner feld start)
 
 
 app.get("/donerdtail/:id",async(req,res)=>{
@@ -197,7 +233,87 @@ app.get("/donerinput",(req,res)=>{
   res.render("listings/donerinput.ejs")
 })
   
+app.get('/logout', (req, res) => {
+    // Destroy the session
+    req.session.destroy(err => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        res.status(500).send('Error destroying session');
+      } else {
+        res.redirect("/");// pahle res.redrict("/l") tha
+      }
+    });
+  });
+  
 
+  
+  
+  
+   app.get("/student12th",(req,res)=>{
+    const flashMessages = req.flash();
+    res.render("listings/student12th.ejs")
+   })
+  
+  
+
+  
+  app.get("/student-lons",isAuthenticated,async(req,res)=>{
+    if (req.session && req.session.user && req.session.user.Role === 'student'){
+      res.render("listings/help.ejs")
+    }
+    else{
+      res.render("listings/error.ejs");
+    }
+  })
+
+
+
+
+app.get("/studentinformation/:id", async(req,res)=>{
+    try {
+      const { id } = req.params;
+      const graja = await Student.findById(id);
+  
+      if (!graja) {
+        // Handle the case when donor details are not found
+        return res.status(404).json({ error: 'Donor details not found' });
+      }
+  
+      console.log(graja);
+      res.render("listings/stdinfo.ejs",{ graja })
+   
+    } catch (error) {
+      // Handle other errors
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  
+  })
+  
+  
+  
+  app.get("/donerdtail/:id",async(req,res)=>{
+    try {
+      const { id } = req.params;
+      const raja = await Doner.findById(id);
+  
+      if (!raja) {
+        // Handle the case when donor details are not found
+        return res.status(404).json({ error: 'Donor details not found' });
+      }
+  
+      console.log(raja);
+      res.render("listings/raja.ejs",{ raja })
+   
+    } catch (error) {
+      // Handle other errors
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+  
+
+//////////////////////////##############  Post resquctes ################## //////////////////////////////////////////////////////////////////////
 
 
 
@@ -247,32 +363,7 @@ res.redirect("/") // pahle res.redrict("/l") tha
 
     })
  
-     app.get("/donorEdit/:id",async(req,res)=>{
-    const{id} = req.params;
-    const ddata = await Doner.findById(id)
-    console.log(ddata)
- res.render("listings/doneredit.ejs",{ddata})
-  
-     })
-
-
-app.get("/profile",isAuthenticated, async(req,res)=>{
-  try{
-const id = req.session.user.userId; 
-if(req.session.user.Role=="donor"){
-  const find  = await Doner.findById(id);
-  res.render("listings/profiledoner.ejs",{find})
-
-}else{
-  const findd = await Student.findById(id);
-res.send("hello")
-
-  console.log(findd)
-}
-  }catch(err){
-    console.log(err);
-  }
-})
+ 
 
 app.put("/donereditdata/:id",async(req,res)=>{
   const{id}= req.params;
@@ -295,10 +386,7 @@ app.delete("deletdta/:id",async (req,res)=>{
   res.redirect("/");// pahle res.redrict("/l") tha
 })
 
-   app.get('/login', (req, res) => {
-    const flashMessages = req.flash();
-      res.render('listings/login.ejs', { flashMessages });
-    });
+  
    
      app.post("/donerlogin",async(req,res)=>{
     let{Email,password,Username,Role} = req.body;
@@ -337,12 +425,6 @@ console.log("hello hii name" + req.session.user.userId);
      
 
     
-   
-
-     app.get("/lostdnt",(req,res)=>{
-      const flashMessages = req.flash();
-      res.render("listings/stulogin.ejs")
-     })
   
    
      app.post("/studentlogin",async(req,res)=>{
@@ -373,81 +455,7 @@ console.log("hello hii name" + req.session.user.userId);
       }
        })
        
-     
-      app.get('/student-secret', isAuthenticated, async(req, res) => {
-        if (req.session && req.session.user && req.session.user.Role === 'student') {
-          const donerdata = await Doner.find({});
-res.render("listings/doners.ejs",{donerdata})
-        
-        } else {
-          res.render("listings/error.ejs");
-        }
-      });
-      app.get("/student-lons",isAuthenticated,async(req,res)=>{
-        if (req.session && req.session.user && req.session.user.Role === 'student'){
-          res.render("listings/help.ejs")
-        }
-        else{
-          res.render("listings/error.ejs");
-        }
-      })
-
-    /* app.get('/donor-secret', isAuthenticated, async(req, res) => {
-      if (req.session && req.session.user && req.session.user.Role === 'donor') {
-const data =  await Student.find({})
-        res.render("listings/students.ejs" ,{data});
-      } else {
-       res.render("listings/error.ejs");
-      }
-    }); */
-    app.get("/donor-secret", isAuthenticated, async (req, res) => {
-      try {
-          if (req.session && req.session.user && req.session.user.Role === 'donor') {
-              const data = await Doner.find({}).lean(); // Use lean() for better performance
-              res.render("listings/students.ejs", { data });
-          } else {
-              res.render("listings/error.ejs");
-          }
-      } catch (error) {
-          console.error(error);
-          res.render("listings/error.ejs");
-      }
-  });
-  
-    
-  
-                                        //doner field(end)
-
-
-
-
-
-    
    
-
-
-
-app.get('/logout', (req, res) => {
-  // Destroy the session
-  req.session.destroy(err => {
-    if (err) {
-      console.error('Error destroying session:', err);
-      res.status(500).send('Error destroying session');
-    } else {
-      res.redirect("/");// pahle res.redrict("/l") tha
-    }
-  });
-});
-
-
-  
-
-
-
- app.get("/student12th",(req,res)=>{
-  const flashMessages = req.flash();
-  res.render("listings/student12th.ejs")
- })
 
 
 
@@ -457,11 +465,12 @@ app.get('/logout', (req, res) => {
 
  app.post("/newstudent", async (req, res) => {
    try {
-     let { Fname, Lname, gender, DOB, Email, Username, Number, Descripition, Goal, city, HomeTown, password } = req.body;
-     console.log(Fname, Lname, gender, DOB, Email, Username, Number, Descripition, Goal, city, HomeTown, password);
+     let { Fname, Lname, gender, DOB, Email, Number, Descripition, Goal, city, HomeTown, password ,   SubCaste,
+      Caste} = req.body;
+     console.log(Fname, Lname, gender, DOB, Email, Number, Descripition, Goal, city, HomeTown, password,SubCaste,Caste);
  
      const data = new Student({
-       Fname, Lname, gender, DOB, Email, username: Username, Number, Descripition, Goal, city, HomeTown, password
+       Fname, Lname, gender, DOB, Email,Number, Descripition, Goal, city, HomeTown, password,Caste,SubCaste
      });
  
      // Save in the database
@@ -532,155 +541,153 @@ req.flash("success", "New Student Registerd");
 res.redirect("/")  // pahle res.redrict("/l") tha
 }) 
 
-app.get("/donerdtail/:id",async(req,res)=>{
-  try {
-    const { id } = req.params;
-    const raja = await Doner.findById(id);
-
-    if (!raja) {
-      // Handle the case when donor details are not found
-      return res.status(404).json({ error: 'Donor details not found' });
-    }
-
-    console.log(raja);
-    res.render("listings/raja.ejs",{ raja })
- 
-  } catch (error) {
-    // Handle other errors
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-})
-
-app.get("/studentinformation/:id", async(req,res)=>{
-  try {
-    const { id } = req.params;
-    const graja = await Student.findById(id);
-
-    if (!graja) {
-      // Handle the case when donor details are not found
-      return res.status(404).json({ error: 'Donor details not found' });
-    }
-
-    console.log(graja);
-    res.render("listings/stdinfo.ejs",{ graja })
- 
-  } catch (error) {
-    // Handle other errors
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-
-})
 
 
-
-
-
-
-
-
-  
-  
-
-  const uploadToCloudinary = async (file) => {
-    if (file && file.path) {
-      //const result = await cloudinary.uploader.upload(file.buffer.toString('base64'));
-      const result = await cloudinary.uploader.upload(file.path);
-      return result.secure_url;
-    } else {
-      throw new Error('File buffer is undefined or null');
-    }
-  };
-
-/* server.listen(port, () => {
-    console.log(`Server is up on port ${port}!`)
-})*/
-
-/*io.on('connection', (socket) => {
-  console.log('New WebSocket connection')
-// mongo db
-socket.on('sendMessage', async (messageData, callback) => {
-  const user = getUser(socket.id);
-  if (!user) {
-      return callback('User not found');
-  }
-
-  const { content, room } = messageData;
+app.post('/sinUp', async (req, res) => {
 
   try {
-      console.log('Attempting to save message:', messageData);
+      const { name, number, email, role, password } = req.body;
 
-      // Create a new message document
-      const newMessage = new Message({
-          content,
-          sender: user.username,
-          room
+      // Check if any of the required fields are missing
+      if (!name || !number || !email || !role || !password) {
+          return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Hash the password using bcrypt
+      const hashedPassword = await  bycrpt.hash(password, 10);
+
+      // Create a new SinUP instance with the hashed password
+      const userSignup = new SinUp({
+          name,
+          number,
+          email,
+     role,
+          password: hashedPassword // Store the hashed password
       });
 
-      // Save the message to MongoDB
-      await newMessage.save();
+      // Save the userSignup instance to the database
+      await userSignup.save();
 
-      console.log('Message saved:', newMessage);
+      // Create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          port:465,
+          logger:true,
+          debug:true,
+          secure:true,
+          secureConnection:false,
 
-      // Broadcast the message to all connected clients
-      io.to(room).emit('message', newMessage);
-      callback(); // acknowledge the message
+          auth: {
+              user: 'briefshalter@gmail.com', // Your Gmail email address
+              pass: 'hljd lfga trbd ffnw' // Your Gmail password
+          },
+          tls:{
+              rejectUnAuthorized:true,
+          }
+      });
+
+      let mailOptions = {
+          from: 'briefshalter@gmail.com', // Sender address
+          to: email, // List of receivers
+          subject: 'Welcome to Dremers', // Subject line
+          html: `<p>Dear ${name},</p><br>
+                 <p>Welcome to Briefshalter, your trusted destination for hassle-free room bookings! We're delighted to have you join our community of discerning travelers seeking convenient and affordable accommodation options.</p>
+                 <p>At Briefshalter, we understand the importance of seamless travel experiences, especially during crucial moments like exams. Our commitment is to provide you with comfortable rooms tailored to your specific needs, ensuring a stress-free stay wherever your academic journey takes you.</p><br>
+                 <p>Thank you for choosing Briefshalter. We're here to make your travels easier and more enjoyable. Feel free to explore our range of options and reach out to us anytime for assistance.</p><br>
+                 <p>Happy booking!</p><br>
+                 <p>Warm regards,<br>
+                 Briefshalter Team</p>` // HTML formatted body
+      };
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              console.log(error);
+              res.status(500).send('Error sending email');
+          } else {
+              console.log('Email sent: ' + info.response);
+              req.flash('success', 'Welcome ' + name + '! You have successfully signed up.');
+              res.redirect('/')
+          }
+      });
+
+      // Redirect to the home page after successful registration
+      // res.redirect("/");
+
   } catch (error) {
-      console.error('Error saving message:', error);
-      callback('Error saving message');
+      console.error(error);
+      req.flash('error', 'Internal server error'); // Set flash message for error
+    //  res.status(500).json({ error: "Internal server error" });
   }
 });
 
 
-///monogg end
-  socket.on('join', (options, callback) => {
-      const { error, user } = addUser({ id: socket.id, ...options })
 
-      if (error) {
-          return callback(error)
+  
+app.post('/sinIn', async (req, res) => {
+  try {
+      const { email, password,role } = req.body;
+
+      // Find the user by email in the database
+      const user = await SinUp.findOne({ email});
+
+      // Check if the user exists
+      if (!user) {
+          return res.status(404).json({ error: "User not found" });
+      }
+        // Check if the role matches the user's role
+        if (user.role !== role) {
+          return res.status(401).json({ error: "Role does not match the user" });
+      }
+      // Compare the provided password with the hashed password in the database
+      const isPasswordMatch = await bycrpt.compare(password, user.password);
+
+      // Check if the passwords match
+       if (!isPasswordMatch) {
+          return res.status(401).json({ error: "Wrong password or may Be duplicate Email is trying " });
       }
 
-      socket.join(user.room)
+      // Passwords match, sign in successful
+      // Set the user data in the session to indicate that the user is authenticated
+      req.session.user = {
+          id: user._id,
+          email: user.email,
+          role: user.role 
+          // Add more user data if needed
+      };
 
-      socket.emit('message', generateMessage('Admin', 'Welcome!'))
-      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
-      io.to(user.room).emit('roomData', {
-          room: user.room,
-          users: getUsersInRoom(user.room)
-      })
+      // Redirect to the home page or any other page after successful sign-in
+      req.flash('success', 'Welcome back! You have successfully signed in.');
+      
+if(user.role=='donor'){
+  const data = await Student.find();
+  res.render("listings/test.ejs",{data})
+}
+  } catch (error) {
+      console.error(error);
+      req.flash('error', 'Invalid credentials'); // Set flash message for error
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+app.get("/hello", async(req,res)=>{
+  const data = await Student.find()
 
-      callback()
-  })
+  res.render("listings/test.ejs",{data})
+});
+// Assuming you have a route like this in your Express app
+app.get('/search', async (req, res) => {
+  try {
+      const caste = req.query.caste; // Assuming the query parameter is 'caste'
+      // Perform a database query to find users based on the caste
+      const users = await Student.find({ Caste: caste }); // Adjust 'Caste' according to your schema
 
-  socket.on('sendMessage', (message, callback) => {
-      const user = getUser(socket.id)
-      const filter = new Filter()
-
-      if (filter.isProfane(message)) {
-          return callback('Profanity is not allowed!')
-      }
-
-      io.to(user.room).emit('message', generateMessage(user.username, message))
-      callback()
-  })
-
-  socket.on('sendLocation', (coords, callback) => {
-      const user = getUser(socket.id)
-      io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
-      callback()
-  })
-
-  socket.on('disconnect', () => {
-      const user = removeUser(socket.id)
-
-      if (user) {
-          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
-          io.to(user.room).emit('roomData', {
-              room: user.room,
-              users: getUsersInRoom(user.room)
-          })
-      }
-  })
+      res.render('listings/filter.ejs', { data: users }); // Send filtered users to the template
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
+});
+app.get('/students',async(req,res)=>{
+  const data = await Student.find();
+  res.render('listings/test.ejs',{data})
 })
-*/ 
+  

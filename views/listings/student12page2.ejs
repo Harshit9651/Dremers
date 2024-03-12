@@ -1,8 +1,6 @@
 <% layout("/layouts/boilerplate") %>
 <style>
-    body{
-        margin-top: 7rem;
-    }
+ 
     p{
         font-weight: 500;    }
         .navbar{
@@ -21,16 +19,16 @@ cursor: pointer;
   font-size: 1.2rem;
   font-weight: 600;
 }
-.ellu{
-  margin-top: 7rem;
+body{
+  margin-top: 4rem !important;
 }
 </style>
 <body>
   
     <div class="container-fluid" >
 
-        <div class="row ellu  " >
-          <div class="col-md-8 offset-2">
+        <div class="row ellu" >
+          <div class=" eppu col-md-8 offset-md-2 offset-lg-1 offset-0">
           <form method="post" action="/newstudentpage2" id="userForm" class="needs-validation" novalidate  enctype="multipart/form-data">
             <h2 >
            Student Registreation Form 2:
@@ -100,7 +98,7 @@ cursor: pointer;
             <div class="mb-3">
                 <label for="Number" class="form-label">Enter AdharNumber:</label>
                 <input type="text"  name="FAdhar" class="form-control" id="aadharInput" placeholder="Enter 12-digit Aadhar number">
-                <button   class=" mt-3 btn btn-warning"  onclick="validateAadhar()">Validate Aadhar</button>
+             
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -149,7 +147,7 @@ cursor: pointer;
               <div class="col-sm-3">
                   <label  class="form-label">
                    Full Name</label>
-                  <input type="text"  class="form-control" required name="WName" placeholder="Enter  Owner name" >
+                  <input type="text"  id="OName" class="form-control" required name="WName" placeholder="Enter  Owner name" >
                   <div class="valid-feedback">
                     Looks good!
                   </div>
@@ -161,7 +159,7 @@ cursor: pointer;
                 <div class="col-sm-3">
                     <label  class="form-label">
                         Number</label>
-                       <input type="tel"  class="form-control" required name="WNumber" placeholder="Owner Number" >
+                       <input type="tel"  id="ONUMBER"  class="form-control" required name="WNumber" placeholder="Owner Number" >
                        <div class="valid-feedback">
                          Looks good!
                        </div>
@@ -189,7 +187,7 @@ cursor: pointer;
           <div class="col-sm-3 mt-3 mb-3">
           
               <label for="Countery" class="form-label"> 10th paresentage:</label>
-              <input type="text" class="form-control"required  name="tenth" id="countery" placeholder="10th paresentage" >
+              <input type="tel" class="form-control"required  name="tenth" id="countery" placeholder="10th paresentage" >
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -198,8 +196,8 @@ cursor: pointer;
               </div>
           </div>
           <div class="col-sm-3 mt-3 mb-3">
-            <label for="Countery" class="form-label"> 11th parsentage:</label>
-            <input type="text" class="form-control"required  name="evelenth" id="countery" placeholder= "11th %" >
+            <label for="Countery" class="form-label"> 12th parsentage:</label>
+            <input type="tel" class="form-control"required  name="evelenth" id="countery" placeholder= "12th %" >
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -220,7 +218,7 @@ cursor: pointer;
           </div>
         </div>
         <div class="mb-3 mt-3">
-          <label for="Countery" class="form-label"> Attech 11th marksheet</label>
+          <label for="Countery" class="form-label"> Attech 12th marksheet</label>
           <input type="file" class="form-control"required  name="marksheet11th" id="" placeholder="Valid only JPG & PNG " >
           <div class="valid-feedback">
             Looks good!
@@ -236,7 +234,7 @@ cursor: pointer;
         <div class="col-sm-3 mt-3 mb-3">
        
             <label for="Countery" class="form-label"> IFSC code</label>
-            <input type="text" class="form-control"required  name="IFSC" id="" placeholder="IFSC" >
+            <input type="text" class="form-control"required  name="IFSC" id="IFSC" placeholder="IFSC" >
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -248,7 +246,7 @@ cursor: pointer;
         <div class="col-sm-3 mt-3 mb-3">
         
             <label for="Countery" class="form-label"> Account Number</label>
-            <input type="text" class="form-control"required  name="Accountno" id="" placeholder="Enter School account no:" >
+            <input type="text" class="form-control"required  name="Accountno" id="AccountNumber" placeholder="Enter School account no:" >
             <div class="valid-feedback">
               Looks good!
             </div>
@@ -259,8 +257,8 @@ cursor: pointer;
         </div>
        </div>
        <div class="mb-3 mt-3">
-        <label for="Countery" class="form-label"> school Authontentication latter </label>
-        <input type="file" class="form-control"required  name="latter" id="" placeholder="school auttention " >
+        <label for="Countery" class="form-label"> collage Authontentication latter </label>
+        <input type="file" class="form-control"required  name="latter" id="" placeholder="Collage Authontentication latter " >
         <div class="valid-feedback">
           Looks good!
         </div>
@@ -292,31 +290,121 @@ cursor: pointer;
         </div> 
     </div>
       </div>
-      <script>
-        function validateAadhar() {
-            // Get Aadhar number from user input
-            var aadharNumber = document.getElementById("aadharInput").value;
+  
+     
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select the form element
+        var form = document.getElementById('userForm');
 
-            // Regular expression to check Aadhar number format
-            var aadharPattern = /^\d{12}$/;
+        // Add event listener for form submission
+        form.addEventListener('submit', function(event) {
+            // Prevent the form from submitting
+            event.preventDefault();
 
-            // Check if Aadhar number matches the pattern
-            if (!aadharPattern.test(aadharNumber)) {
-                alert("Invalid Aadhar number format. Please enter a 12-digit Aadhar number.");
-                return;
+            // Validate the form inputs
+            var isValid = validateForm();
+
+            // If form inputs are valid, submit the form
+            if (isValid) {
+                form.submit();
+            }
+        });
+
+        // Function to validate form inputs
+        function validateForm() {
+            var isValid = true;
+
+            // Validate First Name
+            var firstName = document.getElementById('FFname').value;
+            if (!firstName.trim()) {
+                alert('Please enter a valid First Name.');
+                isValid = false;
             }
 
-            // Check if each digit is within the valid range (0-9)
-            for (var i = 0; i < aadharNumber.length; i++) {
-                var digit = parseInt(aadharNumber[i]);
-
-                if (isNaN(digit) || digit < 0 || digit > 9) {
-                    alert("Invalid Aadhar number. Digits must be between 0 and 9.");
-                    return;
-                }
+            // Validate Last Name
+            var lastName = document.getElementById('Lname').value;
+            if (!lastName.trim()) {
+                alert('Please enter a valid Last Name.');
+                isValid = false;
             }
 
-            alert("Aadhar number is valid.");
+            // Validate DOB
+            var dob = document.getElementById('exampleFormControlInput1').value;
+            if (!dob) {
+                alert('Please enter a valid DOB.');
+                isValid = false;
+            }
+
+       
+
+            // Validate Number
+            var number = document.getElementById('FNumber').value;
+            if (!number.trim() || isNaN(number)) {
+                alert('Please enter a valid Number.');
+                isValid = false;
+            }
+
+            // Validate Aadhar Number
+            var aadhar = document.getElementById('aadharInput').value;
+            if (!aadhar || aadhar.length !== 12 || isNaN(aadhar)) {
+                alert('Please enter a valid 12-digit Aadhar number.');
+                isValid = false;
+            }
+
+            // Validate Owner Name
+            var ownerName = document.getElementById('OName').value;
+            if (!ownerName.trim()) {
+                alert('Please enter a valid Owner Name.');
+                isValid = false;
+            }
+
+            // Validate Owner Number
+            var ownerNumber = document.getElementById('ONUMBER').value;
+            if (!ownerNumber.trim() || isNaN(ownerNumber)) {
+                alert('Please enter a valid Owner Number.');
+                isValid = false;
+            }
+
+            // Validate IFSC Code
+            var ifscCode = document.getElementById('IFSC').value;
+            if (!ifscCode.trim()) {
+                alert('Please enter a valid IFSC Code.');
+                isValid = false;
+            }
+
+            // Validate Account Number
+            var accountNumber = document.getElementById('AccountNumber').value;
+            if (!accountNumber.trim()) {
+                alert('Please enter a valid Account Number.');
+                isValid = false;
+            }
+
+            // Validate 10th Percentage
+            var tenthPercentage = document.getElementsByName('tenth')[0].value;
+            if (!tenthPercentage.trim() || isNaN(tenthPercentage)) {
+                alert('Please enter a valid 10th Percentage.');
+                isValid = false;
+            }
+
+            // Validate 12th Percentage
+            var twelfthPercentage = document.getElementsByName('evelenth')[0].value;
+            if (!twelfthPercentage.trim() || isNaN(twelfthPercentage)) {
+                alert('Please enter a valid 12th Percentage.');
+                isValid = false;
+            }
+
+            // Additional validation checks for other fields...
+
+            return isValid;
         }
-    </script>
+
+   
+    });
+
+
+</script>
+    
+
+
 </body>

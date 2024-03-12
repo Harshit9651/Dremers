@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px 20px; /* Increased padding */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px; /* Increased padding */
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px; /* Increased padding */
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            text-align: center;
+            color: #dc3545;
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                margin: 50px auto;
+                padding: 20px; /* Adjusted padding */
+            }
+        }
+              /* CSS for role option */
+#role {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for WebKit browsers */
+    -moz-appearance: none; /* Remove default arrow for Mozilla browsers */
+    background-color: #fff; /* Background color */
+    color: #333; /* Text color */
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#role option {
+    background-color: #fff; /* Background color */
+    color: #333; /* Text color */
+}
+
+#role:focus {
+    outline: none; /* Remove focus outline */
+    border-color: #007bff; /* Border color on focus */
+}
+    </style>
+</head>
+<body>
+  
+    
+    <div class="container">
+        <h2>Sign In</h2>
+        <form action="/sinIn" method="post">
+            <input type="text" name="email" placeholder="Email" required>
+            <div class="form-group">
+                <label for="role"> Select your Role</label>
+                <select id="role" name="role" required>
+                  
+                    <option value="donor">As Donor</option>
+                    <option value="student">As Student</option>
+                </select>
+            </div>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Sign In">
+        </form>
+        <p class="message">Forgot your password? <a href="#">Reset Password  </a></p>
+        <p class="message"> <a href="/sinup">SignUp Now </a></p>
+   
+    </div>
+</body>
+</html>

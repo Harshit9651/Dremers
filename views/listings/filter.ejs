@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+        background-color: #333;
+        color: #fff;
+        padding: 15px 20px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .logo {
+        font-size: 24px;
+        margin-right: 200px; /* Add margin to separate logo from search bar */
+    }
+
+    .search-bar {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .search-bar input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .search-bar button {
+        padding: 10px 15px;
+        margin-left: 10px; /* Add margin to create gap between input and button */
+        border: none;
+        background-color: #555;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .search-bar button:hover {
+        background-color: #777;
+    }
+
+    @media screen and (max-width: 768px) {
+        .logo {
+            font-size: 20px;
+            margin-right: 10px; /* Adjust margin for smaller screens */
+        }
+
+        .search-bar input[type="text"] {
+            padding: 8px;
+        }
+
+        .search-bar button {
+            padding: 8px 12px;
+        }
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .a-colr {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-col {
+        margin: 10px;
+        flex: 1 0 21%; /* Adjust the width of each card according to your needs */
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .card:hover .overlay {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+<body>
+    <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+        <% for(let dataa of users) { %>
+            <a class="a-colr" href="/studentinformation/<%= dataa._id %>">
+                <div class="card-col hover">
+                    <div class="card">
+                        <img src="<%= dataa.studentImage %>" class="card-img-top" style="height: 20rem;"
+                            alt="listing image">
+                        <div class="overlay">
+                            <p><b>Name:</b> <%= dataa.Fname %> <%= dataa.Lname %><br><br>
+                                <b>Descripition</b> <%= dataa.Descripition %><br><br>
+                                <b>Father name:</b><%= dataa.Fname %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+
+</body>
+</html>

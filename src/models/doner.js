@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     Randomdigit:String,
     marksheet10:String,
     marksheet12:String,
-    Role:String,
+    role: {
+        type: String,
+        default: 'donor'
+    },
     For:String,
     tokens:[
         {

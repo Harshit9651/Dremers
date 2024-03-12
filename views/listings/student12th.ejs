@@ -1,33 +1,83 @@
+
 <% layout("/layouts/boilerplate") %>
 <style>
   .ellu{
     margin-top: 5rem;
   }
-  .navbar{
-  background-color:rgba(26, 183, 194, 0.377)!important;
-  color: white !important;
-  height: 4rem;
+/* Add your custom CSS here */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-  .navbar-brand{
-    font-family: Dancing Script;
-  font-size: 2rem;
-  color: rgb(11, 11, 11);
+.navbar {
+    background-color: rgba(26, 183, 194, 0.377)!important;
+    color: white !important;
+    height: 4rem;
 }
 
+.navbar-brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: rgb(11, 11, 11);
+}
 
 .nav-link {
-  color: rgb(22, 18, 18) !important;
-cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
+    color: rgb(22, 18, 18) !important;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
+
+@media (max-width: 767px) {
+    .navbar {
+        background-color: rgb(46, 140, 145) !important;
+    }
+
+    .navbar-nav .nav-link {
+        color: white !important;
+        font-size: 1rem;
+    }
+
+    .navbar-collapse.show .navbar-nav .nav-link {
+        color: rgb(238, 233, 233) !important;
+    }
+
+    .fa-circle-user {
+        padding-top: 0.5rem;
+        padding-right: 0.5rem;
+        color: rgb(245, 245, 245);
+    }
+
+    .navbar-brand {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2rem;
+        color: rgb(15, 14, 14);
+    }
+}
+    /* Media query for mobile devices */
+    @media (max-width: 576px) {
+        .navbar {
+            height: 3rem; /* Adjust height for mobile */
+        }
+        body {
+            margin-top: 4rem !important; /* Adjust margin for mobile */
+        }
+    }
+
+ 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link href="style/syle.css">
 <body>
+
+
+
         <div class="container-fluid" >
 
         <div class="row ellu  " >
-          <div class="col-md-8 offset-2">
+          <div class="col-md-8 offset-md-2 offset-lg-1 offset-0">
           <form method="post" action="/newstudent" id="userForm" class="needs-validation" novalidate>
             <h2 >
            Student Registreation Form 1:
@@ -91,26 +141,8 @@ cursor: pointer;
                 Please choose a username.
               </div>
             </div>
-            <div class="mb-3">
-              <label for="Username" class="form-label">Enter Role:</label>
-              <input type="text" class="form-control" required id="Role" name="Role" placeholder="write student">
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                Please choose a username.
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="Username" class="form-label">Enter Username :</label>
-              <input type="text" class="form-control" required id="Username" name="Username">
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                Please choose a username.
-              </div>
-            </div>
+           
+   
             <div class="mb-3">
                 <label for="Number" class="form-label">Enter Number:</label>
                 <input type="tel" class="form-control" required name="Number" id="Number" >
@@ -143,7 +175,27 @@ cursor: pointer;
         
             </div>
         
-        
+            <div class="mb-3">
+              <label for="caste" class="form-label">Select Caste:</label>
+              <select class="form-select" required id="caste" name="Caste">
+                  <option value="" disabled selected>Select Caste</option>
+                  <option value="Gen">General</option>
+                  <option value="OBC">Other Backward Class (OBC)</option>
+                  <option value="SC">Scheduled Caste (SC)</option>
+                  <option value="ST">Scheduled Tribe (ST)</option>
+                  <option value="OTHER">Other</option>
+              </select>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please select your caste.</div>
+          </div>
+          <div id="subCasteSection" class="mb-3" style="display: none;">
+            <label for="subCaste" class="form-label">Select Sub-Caste:</label>
+            <select class="form-select" id="subCaste" name="SubCaste">
+                <!-- Options will be dynamically populated based on user selection -->
+            </select>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please select your sub-caste.</div>
+        </div>
          
             <div class="mb-3">
               <label for="Countery" class="form-label">city:</label>
@@ -228,8 +280,57 @@ cursor: pointer;
           
         
               
-             
-          
+      
+    const casteSelect = document.getElementById('caste');
+    const subCasteSection = document.getElementById('subCasteSection');
+    const subCasteSelect = document.getElementById('subCaste');
+
+    // Object containing sub-caste options for each caste category
+    const subCasteOptions = {
+        Gen: ['Brahmin', 'swami','Thakur', 'Vaishya', 'Tyagi', 'Bhumihar', 'Muslims', 'Christians', 'Rajput', 'Kayastha', 'Pathans', 'Mughals', 'Shaikh', 'Sayyad', 'Jat Sikh', 'Bania', 'Punjabi Khatri', 'Punjabi Arora', 'Punjabi Sood', 'Baidya', 'Patidar', 'Patel', 'Kshatriya', 'Reddy', 'Kamma', 'Kapu', 'Gomati baniya', 'Velamma', 'Khsatriya Raju', 'Iyengar', 'Iyer', 'Vellalars', 'Nair', 'Naidu', 'Mukkulathor', 'Sengunthar', 'Parkavakulam', 'Nagarathar Baniya', 'Komati', 'Vokkaligas', 'Lingayats', 'Bunts'],
+
+        OBC: ['Yadav', 'Kurmi', 'Gujjar', 'Teli', 'Khandayat', 'Ezhava', 'Gounder', 'Maratha', 'Vokkaliga', 'Nadar', 'Reddy', 'Jatav', 'Vanniyar', 'Kamma', 'Ahir', 'Naidu', 'Muthuraja', 'Agri', 'Koli', 'Saini', 'Dhobi', 'Tanti', 'Mali', 'Kumbhar', 'Chamar', 'Banjara', 'Golla', 'Kori', 'Kalar', 'Kapu', 'Kummari', 'Gujjar', 'Nayi', 'Vishwakarma', 'Dheevara', 'Devanga', 'Kuruba', 'Munnuru Kapu', 'Rajbhar', 'Telaga'],
+
+
+        OBC: [
+  
+    'Chamar', 'Mahar', 'Bhangi', 'Mochi', 'Dhor', 
+    'Kori', 'Mehtar', 'Dhed', 'Madiga', 'Valmiki', 
+    'Pasi', 'Dholi', 'Halalkhor', 'Jatia', 'Bhangi', 
+    'Ravidasi', 'Chuhra', 'Mala', 'Mang', 'Khatik', 
+    'Paswan', 'Sweeper', 'Balmiki', 'Harijan', 'Chura', 
+    'Dhor', 'Bhangi', 'Bhangi', 'Madiga', 'Chamar', 
+    'Dholi', 'Mala', 'Valmiki', 'Balmiki', 'Khatik', 
+    'Chuhra',   'Others',
+],
+ST : ['Gond', 'Bhil', 'Santal', 'Munda', 'Oraon', 'Kurukh', 'Garo', 'Khasi', 'Lepcha', 'Bodo', 'Mizo', 'Tripuri', 'Siddi', 'Chenchu', 'Koya', 'Bhilala', 'Kol', 'Saura', 'Mundari', 'Ho', 'Bhumij', 'Rabha', 'Karbi', 'Gondi', 'Korku', 'Mawasi', 'Tharu', 'Kharia', 'Dongria Kondh', 'Bhuiya', 'Juang', 'Jarwa', 'Onge', 'Pawar', 'Lambada', 'Andamanese', 'Sentinelese', 'Nicobarese', 'Irula', 'Kurumba', 'Others'],
+
+        OTHER: []
+    };
+
+    // Event listener for caste selection change
+    casteSelect.addEventListener('change', function() {
+        const selectedCaste = this.value;
+        if (selectedCaste in subCasteOptions) {
+            populateSubCasteOptions(subCasteOptions[selectedCaste]);
+            subCasteSection.style.display = 'block';
+        } else {
+            subCasteSection.style.display = 'none';
+            subCasteSelect.innerHTML = ''; // Clear sub-caste options if not applicable
+        }
+    });
+
+    // Function to populate sub-caste options
+    function populateSubCasteOptions(options) {
+        subCasteSelect.innerHTML = ''; // Clear previous options
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            subCasteSelect.appendChild(optionElement);
+        });
+    }
+
           
           
           </script>

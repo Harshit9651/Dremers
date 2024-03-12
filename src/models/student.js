@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema({
     Lname:String,
     Gender:String,
     Descripition:String,
-    Role:String,
+    role: {
+        type: String,
+        default: 'student'
+    },
     Goal:String,
     city:String,
     HomeTown:String,
@@ -16,10 +19,13 @@ const userSchema = new mongoose.Schema({
    SAdhar:Number,
    firstaddress:String,
    lastaddress:String,
-   tenth:String,
-   evelenth:String,
+   tenth:Number,
+   evelenth:Number,
    IFSC:String,
    Accountno:String,
+   SubCaste:String,
+   Caste:String,
+
 
    //father schema
    FFName:String,

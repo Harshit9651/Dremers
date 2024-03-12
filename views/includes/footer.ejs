@@ -6,56 +6,62 @@
     <title>Sticky Footer</title>
     <style>
     body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Set minimum height to fill the viewport */
-}
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Set minimum height to fill the viewport */
+    }
 
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    width: 100%;
-    margin-top: auto; /* Push the footer to the bottom of the page */
-}
+    main {
+        flex: 1; /* Fill remaining space */
+    }
 
-.social-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
+    footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        width: 100%;
+    }
 
-.social-icon {
-    display: inline-block;
-    font-size: 24px;
-    color: #fff;
-    transition: transform 0.3s ease-in-out;
-}
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
 
-.social-icon:hover {
-    transform: rotate(360deg);
-}
+    .social-icon {
+        display: inline-block;
+        font-size: 24px;
+        color: #fff;
+        transition: transform 0.3s ease-in-out;
+    }
 
-.github-icon:hover {
-    color: #211F1F; /* GitHub original color */
-}
+    .social-icon:hover {
+        transform: rotate(360deg);
+    }
 
-.facebook-icon:hover {
-    color: #1877f2; /* Facebook original color */
-}
+    .github-icon:hover {
+        color: #211F1F; /* GitHub original color */
+    }
 
-.twitter-icon:hover {
-    color: #1DA1F2; /* Twitter original color */
-}
+    .facebook-icon:hover {
+        color: #1877f2; /* Facebook original color */
+    }
 
+    .twitter-icon:hover {
+        color: #1DA1F2; /* Twitter original color */
+    }
     </style>
 </head>
 <body>
+
+    <main>
+        <!-- Your main content goes here -->
+    </main>
 
     <footer>
         <div class="container-fluid">

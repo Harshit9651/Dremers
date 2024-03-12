@@ -1,288 +1,172 @@
-
-<% layout("/layouts/boilerplate") %>
-<% if(success){ %>
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <%= success %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <script>
-    // Automatically close the alert after 5 seconds
-    setTimeout(() => {
-      document.querySelector('.alert').classList.add('d-none');
-    }, 2000);
-  </script>
-<% } %>
-
-    <link rel="stylesheet" href="/style/syle.css">
-    <link rel="stylesheet" href="/style/mainshow.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600&family=Rubik+Maps&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students</title>
     <style>
-        /* Custom CSS to minimize image height */
-      a{
-        text-decoration: none;
-      }
-      .mncard {
-        position: relative;
-      }
-    hr{
-      color: wheat;
-      font-size: 1rem;
-    }
-   
-    .pinki{
-      color: white;
-      background-color: aqua;
-      width: 100%;
-      height: 20rem;
-      border-radius: 20px;
-      
-    }
-    .custom-tooltip .tooltip-inner {
-  background-color: white !important;
-  color: purple !important;
-  color: rgb(18, 9, 18) !important;
-  font-weight: 400 !important;
-  font-size: 1.1rem;
-  border-bottom-color:aliceblue !important
- 
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
 
-.tooltip{
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+        }
 
-  border-radius: 20px !important;
-  background-color: white !important;
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-}
-.custom-tooltip{
-  --bs-tooltip-bg: white !important;
-  border-bottom-color: white !important;
-}
+        .logo {
+            font-size: 24px;
+            margin-right: 200px; /* Add margin to separate logo from search bar */
+        }
 
- 
-        </style>
-    <body>
-<div class="container-fluid">
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
 
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
 
-  <section class=" row home">
+        .search-bar button {
+            padding: 10px 15px;
+            margin-left: 10px; /* Add margin to create gap between input and button */
+            border: none;
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-    <div class="col-md-6 home-content">
-      <h1>Welcome to Dremers</h1>
-      <h3>Funding Basced Site You Cant take help and do help of Students</h3>
-    <p>We believe in the power of education to transform lives and create a brighter future. At Dremers, we are dedicated to supporting students on their educational journey by providing a platform for compassionate individuals like you to make a positive impact. Your generosity can pave the way for deserving students to access quality education, pursue their dreams, and overcome financial barriers. Together, we can create a ripple effect of change, empowering students to reach their full potential. Your donation, no matter the size, contributes to building a community where education is a catalyst for success. Join us in shaping a better tomorrow by investing in education today. Thank you for being a beacon of hope and making a difference in the lives of aspiring students.</p>
- <div class="btn-box">
-      <a href="/donerinput" class="btn btn-success">as doner</a>
-      <a href="/student12th" class="btn btn-warning">as Student</a>
-    </div>
-</div>
-<div class="ra col-md-6">
+        .search-bar button:hover {
+            background-color: #777;
+        }
 
-  <img  class="iss" height="400px" src="https://img.freepik.com/premium-photo/portrait-cute-young-student-girl-holding-colorful-notebook-isolated-background_488220-12640.jpg" alt="">
+        @media screen and (max-width: 768px) {
+            .logo {
+                font-size: 20px;
+                margin-right: 10px; /* Adjust margin for smaller screens */
+            }
 
-</div>
+            .search-bar input[type="text"] {
+                padding: 8px;
+            }
 
- 
-</section>
-</div>
+            .search-bar button {
+                padding: 8px 12px;
+            }
+        }
 
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
 
-  <div class="sec row">
-    <div class="col pa">
-DONERS
-    </div>
-  </div>
-<div class="container-fluid">
+        .a-colr {
+            text-decoration: none;
+            color: inherit;
+        }
 
-    
-  <div class=" row mt-3 mncard justify-content-around  row-cols-lg-4  row-cols-md-3  row-cols-sm-3">
-    <% for(let dtta of data) {%>
-      <a  class="col-sm-6 col-md-4 col-lg-3 mb-3">
-      <div class="card  face front col ml-3"  style="width: 18rem;" >
-        <img src="<%= dtta.Image %>" class="card-img-top" alt="Doners" style="height: 20rem;">
-        <div class="card-body">
-          <h4><%= dtta.Fname %>  <%= dtta.Lname %></h4>
-          <p class="card-text"><b>Donation Amout:</b> <%= dtta.Amount %> </p>
-        </div>
-      </div>
-   
-    </a>
-      <% } %>
-      </div>
-  
- 
-</div>
-<hr>
-<div class="thrd row">
-  <div class="col pa">
-Students
-  </div>
-</div>
-<div class="container-fluid">
-  <div class=" row mt-3 mncard justify-content-around  row-cols-lg-4  row-cols-md-3  row-cols-xs-3" >
-    <% for(let dtaa of sdata) {%>
-      <a  class="col-sm-6 col-md-4 col-lg-3 mb-3">
-      <div class="card  face front col ml-3"  style="width: 18rem;" >
-        <img src="<%= dtaa.studentImage %>" class="card-img-top" alt="Doners" style="height: 20rem;">
-        <div class="card-body">
-          <h4><%= dtaa.Fname %>  <%= dtaa.Lname %></h4>
-          <p class="card-text">  <%= dtaa.city %></p>
-        </div>
-      </div>
-   
-    </a>
-      <% } %>
-      </div>
-</div>
-<hr>
+        .card-col {
+            margin: 10px;
+            flex: 1 0 21%; /* Adjust the width of each card according to your needs */
+        }
 
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
 
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
 
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
 
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-   </div>
-    </body> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <% layout("/layouts/boilerplate") %>
-<% if(success){ %>
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <%= success %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <script>
-    // Automatically close the alert after 5 seconds
-    setTimeout(() => {
-      document.querySelector('.alert').classList.add('d-none');
-    }, 2000);
-  </script>
-<% } %>
-
-<link rel="stylesheet" href="/style/syle.css">
-<link rel="stylesheet" href="/style/mainshow.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@600&family=Rubik+Maps&display=swap" rel="stylesheet">
-<style>
-  /* Custom CSS to minimize image height */
-  a{
-    text-decoration: none;
-  }
-  .mncard {
-    position: relative;
-  }
-  hr{
-    color: wheat;
-    font-size: 1rem;
-  }
-
-  .pinki{
-    color: white;
-    background-color: aqua;
-    width: 100%;
-    height: 20rem;
-    border-radius: 20px;
-  }
-  
-  .custom-tooltip .tooltip-inner {
-    background-color: white !important;
-    color: purple !important;
-    font-weight: 400 !important;
-    font-size: 1.1rem;
-    border-bottom-color: aliceblue !important;
-  }
-
-  .tooltip {
-    border-radius: 20px !important;
-    background-color: white !important;
-  }
-  
-  .custom-tooltip {
-    --bs-tooltip-bg: white !important;
-    border-bottom-color: white !important;
-  }
- 
-  #banner{
-    margin-top: 7rem ;
-  }
-</style>
-
+        .card:hover .overlay {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
 <body>
-  <div class="container-fluid">
-    <!--banner-->
-   <div class="row home">
-    <div class="col-md-6  home-content"> 
-      <h1>Welcome to Dremers</h1>
-      <h3>Funding Basced Site You Cant take help and do help of Students</h3>
-    <p>We believe in the power of education to transform lives and create a brighter future. At Dremers, we are dedicated to supporting students on their educational journey by providing a platform for compassionate individuals like you to make a positive impact. Your generosity can pave the way for deserving students to access quality education, pursue their dreams, and overcome financial barriers. Together, we can create a ripple effect of change, empowering students to reach their full potential. Your donation, no matter the size, contributes to building a community where education is a catalyst for success. Join us in shaping a better tomorrow by investing in education today. Thank you for being a beacon of hope and making a difference in the lives of aspiring students.</p>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Dremers</div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by cast...">
+                <button onclick="search()">Search</button>
+            </div>
+        </div>
+    </nav>
 
-      <a href="/donerinput" class="btn btn-success">as doner</a>
-      <a href="/student12th" class="btn btn-warning">as Student</a>
-    
-    </div> <!-- col end-->
-    <div class="col-md-4 d-none  d-md-block">
-      <img src="https://img.freepik.com/premium-photo/portrait-cute-young-student-girl-holding-colorful-notebook-isolated-background_488220-12640.jpg" alt="" class="img-fluid">
-    </div>
-</div>
- 
-
-<!--second for doners  justify-content-around -->
-<div class=" row mt-2 mncard  row-cols-lg-4  row-cols-md-3  row-cols-sm-3">
- 
-  <% for(let dtta of data) {%>
-    <a  class="col-sm-6 col-md-4 col-lg-3 mb-3">
-    <div class="card  face front col ml-3"  style="width: 18rem;" >
-      <img src="<%= dtta.Image %>" class="card-img-top" alt="Doners" style="height: 20rem;">
-      <div class="card-body">
-        <h4><%= dtta.Fname %>  <%= dtta.Lname %></h4>
-        <p class="card-text"><b>Donation Amout:</b> <%= dtta.Amount %> </p>
-      </div>
-    </div>
- 
-  </a>
-    <% } %>
+    <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+        <% for(let dataa of data) { %>
+            <a class="a-colr" href="/studentinformation/<%= dataa._id %>">
+                <div class="card-col hover">
+                    <div class="card">
+                        <img src="<%= dataa.studentImage %>" class="card-img-top" style="height: 20rem;"
+                            alt="listing image">
+                        <div class="overlay">
+                            <p><b>Name:</b> <%= dataa.Fname %> <%= dataa.Lname %><br><br>
+                                <b>Descripition</b> <%= dataa.Descripition %><br><br>
+                                <b>Father name:</b><%= dataa.Fname %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <% } %>
     </div>
 
-    <!-- container-fluid-->
-    </div>
+    <script>
+      function search() {
+    var caste = document.getElementById('searchInput').value;
 
+    // Redirect to the search route with the caste query parameter
+    window.location.href = '/search?caste=' + caste;
+}
 
+    </script>
 </body>
+</html>
