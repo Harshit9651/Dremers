@@ -689,49 +689,73 @@ app.get('/donors',async(req,res)=>{
   res.render('listings/doners.ejs',{donerdata})
 })
 
-// Route to handle sending emails
-app.post('/send-email', (req, res) => {
-  const { recipient, subject, text } = req.body;
 
-  // Email data
-  const mailOptions = {
-      from: 'briefshalter@gmail.com', // Sender email address
-      to: recipient, // Recipient email address
-      subject: subject,
-      text: text
-  };
-
-  // Sending email
-  // Nodemailer transporter setup
-const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-      user: 'briefshalter@gmail.com', // Your Gmail email address
-      pass: 'hljd lfga trbd ffnw'  // Your Gmail password
-  }
-});
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          console.log(error);
-          res.status(500).send('Error: Unable to send email');
-      } else {
-          console.log('Email sent: ' + info.response);
-          res.status(200).send('Email sent successfully');
-      }
-  });
-});
 app.get('/sendEmail',(req,res)=>{
   const donorId = req.query.donorId;
   res.render("listings/email.ejs",{donorId})
 })
-// Handle POST request to '/send-email'
-app.post('/mail', (req, res) => {
+app.post('/mail', async (req, res) => {
   // Retrieve form data from the request body
-const{emailSubject,emailContent,donorId,usermail} = req.body
-console.log(emailSubject,emailContent,donorId,usermail)
+  const { emailSubject, emailContent, donorId, usermail } = req.body;
+  console.log(emailSubject, emailContent, donorId, usermail);
 
-  // Process the form data as needed (e.g., send email, store in database, etc.)
-  
-  // Example response to the client
-  res.status(200).send('Email sent successfully!');
+  try {
+    // Assuming Doner is your model
+    const donor = await Doner.findById(donorId);
+    console.log(donor)
+    const Email = donor.Email;
+   /* if (!donor || !donor.Email) {
+      // Handle the case where the donor or their email is not found
+      return res.status(404).send('Donor or email not found');
+    }*/
+
+   // Check if the email retrieved from the database is valid
+  /*  const email = donor.email;
+    if (!isValidEmail(email)) {
+      return res.status(400).send('Invalid email');
+    }*/
+
+    // Create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'briefshalter@gmail.com', // Your Gmail email address
+        pass: 'hljd lfga trbd ffnw' // Your Gmail password
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    let mailOptions = {
+      from: 'briefshalter@gmail.com', // Sender address
+      to: Email, // List of receivers
+      subject: emailSubject || 'Welcome to Dremers', // Subject line
+      text: emailContent || 'Welcome to Dremers' // Email content
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send('Error sending email');
+      } else {
+        console.log('Email sent:', info.response);
+        req.flash('success', 'Welcome! You have successfully signed up.');
+        return res.redirect('/');
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
 });
+
+// Function to validate email
+function isValidEmail(email) {
+  // Use a regular expression for basic email validation
+  const emailRegex = /\S+@\S+\.\S+/;
+  return emailRegex.test(email);
+}
