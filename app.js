@@ -571,8 +571,8 @@ app.post('/sinUp', async (req, res) => {
           secureConnection:false,
 
           auth: {
-              user: 'briefshalter@gmail.com', // Your Gmail email address
-              pass: 'hljd lfga trbd ffnw' // Your Gmail password
+            user: 'dremersio@gmail.com', // Your Gmail email address
+            pass: 'fdmp qqny iupt yfly'
           },
           tls:{
               rejectUnAuthorized:true,
@@ -721,8 +721,8 @@ app.post('/mail', async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: 'briefshalter@gmail.com', // Your Gmail email address
-        pass: 'hljd lfga trbd ffnw' // Your Gmail password
+        user: 'dremersio@gmail.com', // Your Gmail email address
+        pass: 'fdmp qqny iupt yfly' // Your Gmail password
       },
       tls: {
         rejectUnauthorized: false
@@ -730,7 +730,7 @@ app.post('/mail', async (req, res) => {
     });
 
     let mailOptions = {
-      from: 'briefshalter@gmail.com', // Sender address
+      from: 'dremersio@gmail.com', // Sender address
       to: Email, // List of receivers
       subject: emailSubject || 'Welcome to Dremers', // Subject line
       text: emailContent || 'Welcome to Dremers' // Email content
