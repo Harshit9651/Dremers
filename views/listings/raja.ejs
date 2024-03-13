@@ -2,9 +2,8 @@
 <link rel="stylesheet" href="/style/syle.css">
 <link rel="stylesheet" href="/style/mainshow.css">
 <style>
-     body {
-       background-color: #081b29;
-       
+    body {
+        background-color: #081b29;
     }
 
     .row {
@@ -14,87 +13,71 @@
         align-items: center; /* Center the content vertically */
     }
 
-    @media (min-width: 576px) {
-        /* Medium devices (md) and up */
-        .row {
-            height: 100vh; /* Reset height for medium and larger devices */
-        }
+    .col-8 {
+        max-width: 25rem;
     }
 
-    @media (min-width: 768px) {
-        /* Large devices (lg) and up */
+    .card-text {
+        color: white;
+    }
+
+    @media (max-width: 575px) {
+        /* Small devices (phones) */
         .row {
-            height: 100vh; /* Reset height for medium and larger devices */
+            height: auto; /* Reset height for small devices */
         }
+
         .col-8 {
-            max-width: 25rem;
+            width: 100%; /* Set column width to 100% for small devices */
+            max-width: none; /* Reset max-width for small devices */
         }
-
     }
-    @media (min-width: 450px) {
-        /* Large devices (lg) and up */
-        .row {
-            height: 100vh; /* Reset height for medium and larger devices */
-        }
-       
 
+    @media (min-width: 576px) and (max-width: 767px) {
+        /* Medium devices (tablets) */
+        .row {
+            height: auto; /* Reset height for medium devices */
+        }
+        .container-fluid{
+            margin-top: 5rem !important;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        /* Large devices (landscape tablets) */
+        .row {
+            height: auto; /* Reset height for large devices */
+        }
     }
 
     @media (min-width: 992px) {
-        /* Extra-large devices (xl) and up */
+        /* Extra-large devices (desktops) */
         .row {
-            height: 100vh; /* Reset height for medium and larger devices */
-        }
-        .col-8 {
-            max-width: 25rem;
+            height: 100vh; /* Reset height for extra-large devices */
         }
     }
-    .card-text{
-        color: white;
-    }
-</style>
 </style>
 
 <body>
-   <div class="container-fluid">
-    <div class="row ">
-        <div class="col-8 ">
-            <div class="card" style="width: 25rem;">
-            
-                <img src="<%= raja.Image %>" class="card-img-top" alt="doner photo" style="height:20rem;">
-                <div class="card-body">
-                  <h5 class="card-text">
-                  <b> Name: </b><%= raja.Fname %>  <%= raja.Lname %>
-                    <br> <b>Descripition:</b><%= raja.Descripition %> 
-                <br>
-           <b>For:</b><%= raja.For%>
-                <br>
-               <b> Amount:</b><%= raja.Amount %> </h5>
-                <button class="btn btn-success">Send Message</button> &nbsp; &nbsp;<button class="btn btn-info">text</button>
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-8 ">
+                <div class="card" style="width: 25rem;">
+                    <img src="<%= raja.Image %>" class="card-img-top" alt="doner photo" style="height:20rem;">
+                    <div class="card-body">
+                        <h5 class="card-text">
+                            <b>Name:</b> <%= raja.Fname %> <%= raja.Lname %><br>
+                            <b>Description:</b> <%= raja.Description %><br>
+                            <b>For:</b> <%= raja.For %><br>
+                            <b>Amount:</b> <%= raja.Amount %>
+                        </h5>
+                        <button class="btn btn-success">Send Message</button> &nbsp; &nbsp;<button class="btn btn-info">Text</button>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
-   </div>
 
-<!-- Add this code to your EJS file -->
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  // Establish connection with the server
-  const socket = io();
-
-  // Function to send a message to the donor
-  const sendMessageToDonor = () => {
-    // Here, you can implement code to prompt the user to enter the message content
-    const messageContent = prompt("Enter your message to the donor:");
-
-    // Emit the message event to the server with the message content
-    socket.emit('sendMessageToDonor', { content: messageContent });
-  };
-
-  // Add event listener to the Send Message button
-  document.querySelector('.btn-success').addEventListener('click', sendMessageToDonor);
-</script>
-
+    <!-- Add this code to your EJS file -->
 
 </body>

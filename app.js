@@ -130,14 +130,7 @@ const uploadToCloudinary = async (file) => {
 ///////////////////////////##############  Authentication ################## //////////////////////////////////
 let userEmail;
 
-const isAuthenticated = (req, res, next) => {
-  if (req.session && req.session.user) {
-      return next();
-  } else {
-      // Redirect to the login page if the user is not authenticated
-      res.redirect('/sinin');
-  }
-};
+
 
 
 
@@ -156,7 +149,7 @@ app.get("/donorEdit/:id",async(req,res)=>{
      })
 
 
-app.get("/profile",isAuthenticated, async(req,res)=>{
+app.get("/profile",async(req,res)=>{
   try{
 const id = req.session.user.userId; 
 if(req.session.user.Role=="donor"){
@@ -257,7 +250,7 @@ app.get('/logout', (req, res) => {
   
 
   
-  app.get("/student-lons",isAuthenticated,async(req,res)=>{
+  app.get("/student-lons",async(req,res)=>{
     if (req.session && req.session.user && req.session.user.Role === 'student'){
       res.render("listings/help.ejs")
     }
@@ -538,7 +531,7 @@ console.log("hello hii name" + req.session.user.userId);
 
 console.log(Studnetfind)
 req.flash("success", "New Student Registerd");
-res.redirect("/")  // pahle res.redrict("/l") tha
+ res.redirect('/donors')// pahle res.redrict("/l") tha
 }) 
 
 
@@ -691,3 +684,54 @@ app.get('/students',async(req,res)=>{
   res.render('listings/test.ejs',{data})
 })
   
+app.get('/donors',async(req,res)=>{
+  const donerdata = await Doner.find();
+  res.render('listings/doners.ejs',{donerdata})
+})
+
+// Route to handle sending emails
+app.post('/send-email', (req, res) => {
+  const { recipient, subject, text } = req.body;
+
+  // Email data
+  const mailOptions = {
+      from: 'briefshalter@gmail.com', // Sender email address
+      to: recipient, // Recipient email address
+      subject: subject,
+      text: text
+  };
+
+  // Sending email
+  // Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+      user: 'briefshalter@gmail.com', // Your Gmail email address
+      pass: 'hljd lfga trbd ffnw'  // Your Gmail password
+  }
+});
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          console.log(error);
+          res.status(500).send('Error: Unable to send email');
+      } else {
+          console.log('Email sent: ' + info.response);
+          res.status(200).send('Email sent successfully');
+      }
+  });
+});
+app.get('/sendEmail',(req,res)=>{
+  const donorId = req.query.donorId;
+  res.render("listings/email.ejs",{donorId})
+})
+// Handle POST request to '/send-email'
+app.post('/mail', (req, res) => {
+  // Retrieve form data from the request body
+const{emailSubject,emailContent,donorId,usermail} = req.body
+console.log(emailSubject,emailContent,donorId,usermail)
+
+  // Process the form data as needed (e.g., send email, store in database, etc.)
+  
+  // Example response to the client
+  res.status(200).send('Email sent successfully!');
+});

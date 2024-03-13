@@ -46,23 +46,28 @@ cursor: pointer;
   width: 400px;
   border: 2px solid yellow;
 }
+h3{
+  font-weight: 800;
+  font-size: 2rem;
+  color: darkcyan;
+}
 </style>
 
 
 <body>
+
     
 <div class="container-fluid" >
-
-
-
- 
 
 <div class="row ellu  " >
   <div class="col-md-8 offset-md-2 offset-lg-1 offset-0">
   <form method="post" action="/newdoner" id="userForm" class="needs-validation"novalidate  enctype="multipart/form-data">
+
     <h2 id="dr">
       Doner Registreation:
     </h2>
+     
+    
     <div class="mb-3">
       <label for="exampleFormControlInput1" class="form-label">Enter Photo :</label>
       <input type="file" class="form-control" required id="exampleFormControlInput1" name="Image" placeholder="Enter Image " accept="image/*">
@@ -96,6 +101,11 @@ cursor: pointer;
     </div>
   </div>
 </div>
+<div id="message" class="massege d-none">
+  <h3> Dear Donor
+your small help can change someone's life 
+  </h3>
+</div>
 
   <div class="mb-3">
       <label for="exampleFormControlInput1" class="form-label">Email address :</label>
@@ -108,26 +118,7 @@ cursor: pointer;
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="Username" class="form-label">Enter Username :</label>
-      <input type="text" class="form-control" required id="Username" name="Username">
-      <div class="valid-feedback">
-        Looks good!
-      </div>
-      <div id="validationServerUsernameFeedback" class="invalid-feedback">
-        Please choose a username.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="Username" class="form-label">Enter Role:</label>
-      <input type="text" class="form-control" required id="Role" name="Role"  placeholder="write donor">
-      <div class="valid-feedback">
-        Looks good!
-      </div>
-      <div id="validationServerUsernameFeedback" class="invalid-feedback">
-        Please choose a username.
-      </div>
-    </div>
+
     <div class="row mt-3">
       <label class="form-label">Donetion for which Category:</label>
      <div class="col-md-4 mb-3">
@@ -162,7 +153,7 @@ cursor: pointer;
     </div>
 
     <div class="mb-3">
-      <label for="Number" class="form-label">Enter Number:</label>
+      <label for="Number" class="form-label">Enter phone Number:</label>
       <input type="tel" class="form-control" required name="Number" id="Number" >
       <div class="valid-feedback">
         Looks good!
@@ -183,7 +174,7 @@ cursor: pointer;
     </div>
  
     <div class="mb-3">
-      <label for="Countery" class="form-label">Countery :</label>
+      <label for="Countery" class="form-label">Country :</label>
       <input type="text" class="form-control"required name="countery" id="countery" >
       <div class="valid-feedback">
         Looks good!
@@ -205,7 +196,7 @@ cursor: pointer;
 
     <div class="col-3">
       <div class=" mt-5 mb-5">
-        <button class="btn btn-danger">Edit</button>
+        <button class="btn btn-success"> Submit</button>
       </div>
     
  
@@ -216,13 +207,10 @@ cursor: pointer;
 
 
 
-<div class="row massege mt-4">
-  <div class="donate col-sm-6">
-   <h3> Dear Doner: your small help can change smoeone whole life!</h3>
-  </div>
-</div>
+
 
 </div>
+
 
 <script>// Example starter JavaScript for disabling form submissions if there are invalid fields
   (() => {
@@ -244,12 +232,18 @@ cursor: pointer;
     })
   })()
   
-
-      
-     
-  
-  
-  
   </script>
+  <script>
+    // Function to show message for 3 seconds
+    function showMessage() {
+      const message = document.getElementById('message');
+      message.classList.remove('d-none');
+      setTimeout(() => {
+        message.classList.add('d-none');
+      }, 6000); // Show for 3 seconds
+    }
 
+    // Show message after the page loads
+    window.addEventListener('load', showMessage);
+  </script>
 </body>

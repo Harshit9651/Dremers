@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Compose Email</h2>
+    <form id="emailForm" action="mail" method="post">
+        
+        <label for="emailSubject">Your Email</label><br>
+        <input type="text" id="emailSubject" name="usermail" required><br><br>
+        
+        <label for="emailSubject">Subject:</label><br>
+        <input type="text" id="emailSubject" name="emailSubject" required><br><br>
+        
+        <label for="emailContent">Email Content:</label><br>
+        <textarea id="emailContent" name="emailContent" rows="6" required></textarea><br><br>
+        <input type="hidden" id="donorId" name="donorId" value="<%=donorId%>">
+        <button type="submit">Send Email</button>
+    </form>
+
+   
+</body>
+</html>
