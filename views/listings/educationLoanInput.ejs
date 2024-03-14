@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Loan Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .ap{
+            font-size: 1rem;
+            font-weight:bold ;
+            color: #007bff;
+
+        }
+          /* Responsive styles */
+          @media screen and (max-width: 600px) {
+            .loan {
+                padding: 15px;
+            }
+            .ap{
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan process Exprience</h1>
+        <form action="/Loanstory" method="POST">
+            <label for="studentName">Your  Name:</label>
+            <input type="text" id="studentName" name="studentName" required>
+            <label for="bankerName">Enter Your Image URL</label>
+            <input type="text" id="bankerName" name="Image" required>
+             
+            <label for="bankName">Bank Name:</label>
+            <input type="text" id="bankName" name="bankName" required>
+            
+            <label for="story">Story:</label>
+            <textarea id="story" name="Story" rows="4" required placeholder="tell me about your education loan story how it rejected & done"></textarea>
+            
+            <label for="bankerName">Banker Name:</label>
+            <input type="text" id="bankerName" name="bankerName" required>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
+            
+            <label for="branch">Branch:</label>
+            <input type="text" id="branch" name="branch" required>
+            
+            <input type="submit" value="Submit">
+        </form>
+        <div class="ap">
+           <h4> ("dear user it help the student who want to apply for Education Loan so please write about... seriously")</h4>
+        </div>
+    </div>
+</body>
+</html>

@@ -52,7 +52,9 @@ app.listen(port, () => {
 const Student = require("./src/models/student.js")
 const Doner = require("./src/models/doner.js");
 const CLOUD = require("./src/models/cloudn.js");
-const SinUp = require('./src/models/sinUp.js')
+const SinUp = require('./src/models/sinUp.js');
+const Scholer = require('./src/models/scholer.js');
+const EducationLoan = require('./src/models/educationLoan.js');
 
 
 
@@ -73,6 +75,7 @@ app.use(session({
   resave:false,
   saveUninitialized:false,
   store:store,
+  cookie: { maxAge: 6 * 60 * 60 * 1000 } // 6 hours session expiration
 }))
 app.use(flash());
 app.use((req,res,next)=>{
@@ -81,8 +84,44 @@ app.use((req,res,next)=>{
 
 })
 
-
-
+///////////////////////####### Authentication code ######//////////////////
+// Middleware to check if user is authenticated and has the appropriate role
+const isAuthenticatedstudent = (req, res, next) => {
+  if (req.session.user) {
+    // Check if user is authenticated
+    const { role } = req.session.user;
+    if (role === 'donor') {
+      // If user is a donor, prevent access to the student page
+      req.flash('error', 'Donors are not allowed to access student pages.');
+      return res.redirect('/sinIn'); // Redirect to homepage or any other page
+    }
+    // User is authenticated and has the appropriate role, proceed to the next middleware
+    next();
+  } else {
+    // User is not authenticated, redirect to login page with a flash message
+    req.flash('error', 'Please login to access this page.');
+    res.redirect('/sinIn');
+  }
+};
+const isAuthenticateddonor = (req, res, next) => {
+  if (req.session.user) {
+    // Check if user is authenticated
+    const { role } = req.session.user;
+    if (role === 'donor') {
+      // User is a donor, allow access to the page
+      return next();
+    } else {
+      // User is not a donor, redirect to homepage with an error message
+      req.flash('error', 'You are not authorized to access this page.');
+      return res.redirect('/sinIn');
+    }
+  } else {
+    // User is not authenticated, redirect to login page with a flash message
+    req.flash('error', 'Please login to access this page.');
+    return res.redirect('/sinIn');
+  }
+};
+//////////////////////////######## Authentication code end ####////////////
 
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -221,7 +260,7 @@ app.get("/donerdtail/:id",async(req,res)=>{
 
 
 
-app.get("/donerinput",(req,res)=>{
+app.get("/donerinput",isAuthenticateddonor,(req,res)=>{
   const flashMessages = req.flash();
   res.render("listings/donerinput.ejs")
 })
@@ -242,7 +281,7 @@ app.get('/logout', (req, res) => {
   
   
   
-   app.get("/student12th",(req,res)=>{
+   app.get("/student12th",isAuthenticatedstudent,(req,res)=>{
     const flashMessages = req.flash();
     res.render("listings/student12th.ejs")
    })
@@ -251,12 +290,9 @@ app.get('/logout', (req, res) => {
 
   
   app.get("/student-lons",async(req,res)=>{
-    if (req.session && req.session.user && req.session.user.Role === 'student'){
-      res.render("listings/help.ejs")
-    }
-    else{
-      res.render("listings/error.ejs");
-    }
+  res.render("listings/help.ejs");
+
+  
   })
 
 
@@ -580,16 +616,19 @@ app.post('/sinUp', async (req, res) => {
       });
 
       let mailOptions = {
-          from: 'briefshalter@gmail.com', // Sender address
+          from: 'dremersio@gmail.com', // Sender address
           to: email, // List of receivers
           subject: 'Welcome to Dremers', // Subject line
-          html: `<p>Dear ${name},</p><br>
-                 <p>Welcome to Briefshalter, your trusted destination for hassle-free room bookings! We're delighted to have you join our community of discerning travelers seeking convenient and affordable accommodation options.</p>
-                 <p>At Briefshalter, we understand the importance of seamless travel experiences, especially during crucial moments like exams. Our commitment is to provide you with comfortable rooms tailored to your specific needs, ensuring a stress-free stay wherever your academic journey takes you.</p><br>
-                 <p>Thank you for choosing Briefshalter. We're here to make your travels easier and more enjoyable. Feel free to explore our range of options and reach out to us anytime for assistance.</p><br>
-                 <p>Happy booking!</p><br>
-                 <p>Warm regards,<br>
-                 Briefshalter Team</p>` // HTML formatted body
+          html: `<p>Dear ${name} you succesfullu registered is dremers </p>
+          <p>Dremers is a unique platform dedicated to fostering the dreams of ambitious students who aspire for greater heights but are hindered by financial constraints. As a student, you have the opportunity to seek financial assistance to fuel your academic journey, while as a donor, you can make a meaningful difference by supporting deserving children in need.</p>
+          <p>At Dremers, we believe in the power of education to transform lives and communities. We provide a platform where students can turn their aspirations into reality, regardless of their financial circumstances. Our community of donors generously contributes to the academic endeavors of bright young minds, empowering them to pursue their dreams without limitations.</p>
+          <p>Whether you are a student seeking support or a donor looking to make a positive impact, Dremers welcomes you to join our mission of bridging the gap between ambition and opportunity. Together, we can create a brighter future for aspiring students and inspire hope for generations to come.</p>
+          <p>Thank you for choosing Dremers. We look forward to embarking on this journey with you.</p>
+          <p>Warm regards,</p>
+          <p>Harshit Sharma<br>
+          Founder of Dremers <br>
+          Dremers Team</p>
+          ` // HTML formatted body
       };
       // Send email
       transporter.sendMail(mailOptions, (error, info) => {
@@ -759,3 +798,96 @@ function isValidEmail(email) {
   const emailRegex = /\S+@\S+\.\S+/;
   return emailRegex.test(email);
 }
+
+app.get("/scholarshipsc", async(req, res) => {
+ const scholarships = await Scholer.find();
+ res.render('listings/displyscholer.ejs',{scholarships})
+});
+app.get('/h',(req,res)=>{
+  res.render('listings/scholar.ejs')
+})
+app.post('/scholerships',async(req,res)=>{
+
+
+try {
+  const{sname,Eligibility, deadline,Descripition,Image,criteria,Link} = req.body;
+
+  // Check if any of the required fields are missing
+  if (!sname || !Eligibility || !deadline || !Descripition || !Image||!criteria||!Link) {
+      return res.status(400).json({ error: "Missing required fields" });
+  }
+
+ 
+  // Create a new SinUP instance with the hashed password
+  const newScholership = new Scholer({
+ // Store the hashed password
+ sname,Eligibility, deadline,Descripition,Image,criteria,Link
+  });
+
+  // Save the userSignup instance to the database
+  const newscholer = await newScholership.save();
+  console.log(newscholer);
+  res.redirect('/')
+
+
+} catch (error) {
+  console.error(error);
+  req.flash('error', 'Invalid credentials'); // Set flash message for error
+  res.status(500).json({ error: "Internal server error" });
+}
+})
+// Assuming you have an array of scholarships named scholarships
+
+app.get('/homepagescholership',(req,res)=>{
+  res.render('listings/scholershipHomepage.ejs')
+})
+app.get('/EducationLoans',async(req,res)=>{
+  try {
+    const educationLoans = await EducationLoan.find();
+    res.render('listings/educationLoan.ejs',{educationLoans})
+} catch (err) {
+    console.error('Error fetching education loans:', err);
+    res.status(500).send('Internal Server Error');
+}
+
+
+})
+app.get('/EducationLoanForm',(req,res)=>{
+  res.render('listings/educationLoanInput.ejs')
+})
+app.get('/education',(req,res)=>{
+  res.render("listings/help.ejs")
+}
+)
+
+
+
+app.post('/Loanstory',async(req,res)=>{
+ 
+  try {
+    const {studentName,bankName,bankerName,phoneNumber,branch,Story,Image } = req.body;
+
+    // Check if any of the required fields are missing
+    if (!studentName|| !bankName || !bankerName || !phoneNumber || !branch||!Story||!Image) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+ 
+    // Create a new SinUP instance with the hashed password
+    const Loanstory = new EducationLoan({
+      studentName,bankName,bankerName,phoneNumber,branch,Story,Image // Store the hashed password
+    });
+
+    // Save the userSignup instance to the database
+    await Loanstory.save();
+    res.redirect('/')
+  }catch (error) {
+    console.error(error);
+    req.flash('error', 'Invalid credentials'); // Set flash message for error
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+})
+app.get('/aboutus',(req,res)=>{
+  res.render('listings/aboutme.ejs')
+})

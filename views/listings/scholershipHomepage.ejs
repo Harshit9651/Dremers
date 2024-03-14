@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .option {
+            flex: 1 1 45%;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .option {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scholarship Options</h1>
+        <div class="options">
+            <div class="option" onclick="window.location.href='/EducationLoans'">
+                <h2>Education Loan Guidance</h2>
+                <p>Get advice on education loans.</p>
+            </div>
+            <div class="option" onclick="window.location.href='/scholarshipsc'">
+                <h2>Government and Other Scholarships</h2>
+                <p>Explore available scholarships.</p>
+            </div>
+            <div class="option" onclick="window.location.href='/education'">
+                <h2> Education Loan </h2>
+                <p>there are some Contect Number of Bank Loan Head officer that may help you to provide education loan</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

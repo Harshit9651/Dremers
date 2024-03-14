@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Loans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .loan {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        
+        .loan h2 {
+            margin-top: 0;
+        }
+        
+        .loan h3 {
+            margin-top: 20px;
+        }
+        
+        /* Responsive styles */
+        @media screen and (max-width: 600px) {
+            .loan {
+                padding: 15px;
+            }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        
+        <h1 style="text-align: center;">Education Loan Stories</h1>
+        <a href="/EducationLoanForm"><button class="btn btn-warning">write your Loan Exprience </button> </a>
+        <% educationLoans.forEach(function(loan) { %>
+            <div class="loan">
+                <h2>Student Name: <%= loan.studentName %></h2>
+                <p>Bank Name: <%= loan.bankName %></p>
+                <p>Story: <%= loan.story %></p>
+                <h3>Banker Details:</h3>
+                <p>Banker Name: <%= loan.bankerName %></p>
+                <p>Phone Number: <%= loan.phoneNumber %></p>
+                <p>Branch: <%= loan.branch %></p>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
