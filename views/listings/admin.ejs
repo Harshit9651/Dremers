@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <style>
+
+       /* body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }*/
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Added flex-direction */
             align-items: center;
-            height: 100vh;
             background-color: #f0f0f0; /* Setting a background color for better visibility */
         }
 
+
+     
         .sidebar {
             position: fixed;
             left: -250px; /* Initially hide sidebar */
@@ -66,6 +79,13 @@
             gap: 50px; /* Gap between circles */
         }
 
+        .count-circle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
         .count-circle {
             width: 150px;
             height: 150px;
@@ -102,15 +122,15 @@
 
         /* Different colors for each count circle */
         .donor-circle {
-            background-color: #ff5252; /* Red */
+            background-color: #10ded4; /* Red */
         }
 
         .student-circle {
-            background-color: #448aff; /* Blue */
+            background-color: #10b5de; /* Blue */
         }
 
         .signup-circle {
-            background-color: #00c853; /* Green */
+            background-color:  #10dedb; /* Green */
         }
 
         .menu-toggle {
@@ -133,9 +153,80 @@
                 transform: translateY(0);
             }
         }
+        h2{
+            color: #000000;
+            margin-top: 10px; /* Adjust the margin for spacing */
+        }
+      /* Your existing CSS styles go here */
+
+/* Media queries for responsiveness */
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Adjust the width for smaller screens */
+    }
+
+    .menu-toggle {
+        font-size: 1.2rem; /* Adjust the font size of the toggle icon */
+    }
+
+    .content {
+        padding: 10px; /* Adjust the padding for smaller screens */
+    }
+
+    .count-circle-container {
+        flex-direction: column; /* Stack circles vertically on smaller screens */
+    }
+
+    .count-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 1rem; /* Adjust font size for smaller circles */
+    }
+
+    .count-circle-inner {
+        font-size: 0.8rem; /* Adjust font size for smaller circles */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .sidebar {
+        width: 150px; /* Further reduce sidebar width for smaller screens */
+    }
+
+    .menu-toggle {
+        font-size: 1rem; /* Further reduce font size of toggle icon */
+    }
+
+    .content {
+        padding: 5px; /* Further reduce padding */
+    }
+
+    .count-circle {
+        width: 80px; /* Further reduce circle size */
+        height: 80px;
+        font-size: 0.8rem; /* Further reduce font size */
+    }
+
+    .count-circle-inner {
+        font-size: 0.6rem; /* Further reduce font size */
+    }
+}
+.nav {
+            width: 100%;
+            height: 50px;
+            background-color: #10b5de; /* Color for the nav */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
+   <!-- Navigation bar -->
+   <div class="nav">
+    <h2>Dreamers Cluster</h2>
+</div>
     <!-- Menu toggle icon -->
     <div class="menu-toggle" onclick="toggleSidebar()">
         &#9776; <!-- Unicode for the menu icon -->
@@ -146,29 +237,40 @@
             Admin Panel
         </div>
         <ul class="menu">
-            <li><a href="#" class="menu-item">Donor</a></li>
-            <li><a href="#" class="menu-item">Student</a></li>
-            <li><a href="#" class="menu-item">Signups</a></li>
-            <li><a href="#" class="menu-item">Others</a></li>
+            <li><a href="/admindonor" class="menu-item">Donor</a></li>
+            <li><a href="/adminstudent" class="menu-item">Student</a></li>
+            <li><a href="/adminsinup" class="menu-item">Signups</a></li>
+           
         </ul>
     </div>
+  
     <div class="content">
+   
         <!-- Count circles -->
         <div class="count-circle-container">
-            <div class="count-circle donor-circle">
-                <div class="count-circle-inner">
-                    <span class="count-number">89</span> Donors
+            <div class="count-circle-wrapper">
+                <div class="count-circle donor-circle">
+                    <div class="count-circle-inner">
+                        <span class="count-number"><%= donorcount %></span>
+                    </div>
                 </div>
+                <h2>Donors</h2>
             </div>
-            <div class="count-circle student-circle">
-                <div class="count-circle-inner">
-                    <span class="count-number">1000</span> Students
+            <div class="count-circle-wrapper">
+                <div class="count-circle student-circle">
+                    <div class="count-circle-inner">
+                        <span class="count-number"><%= studentcount %></span>
+                    </div>
                 </div>
+                <h2>Students</h2>
             </div>
-            <div class="count-circle signup-circle">
-                <div class="count-circle-inner">
-                    <span class="count-number">1999</span> Signups
+            <div class="count-circle-wrapper">
+                <div class="count-circle signup-circle">
+                    <div class="count-circle-inner">
+                        <span class="count-number"><%= sinupcount%></span>
+                    </div>
                 </div>
+                <h2>Signups</h2>
             </div>
         </div>
     </div>

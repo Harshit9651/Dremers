@@ -893,23 +893,67 @@ app.post('/Loanstory',async(req,res)=>{
 app.get('/aboutus',(req,res)=>{
   res.render('listings/aboutme.ejs')
 })
-app.get('/admin',(req,res)=>{
-  res.render('listings/admin.ejs')
+app.get('/admin', async (req, res) => {
+  try {
+      const donorcount = await Doner.countDocuments({});
+      const studentcount = await Student.countDocuments({});
+      const sinupcount = await SinUp.countDocuments({});
+      console.log(donorcount,studentcount,sinupcount);
+      res.render('listings/admin.ejs', {donorcount,studentcount,sinupcount});
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+app.get('/admindonor',async(req,res)=>{
+  const donor = await Doner.find();
+  res.render('listings/admindonor.ejs',{donor})
 })
-// Count the number of documents in the Donor collection
+app.get('/admindeletedonor/:donorId',async(req,res)=>{
+  try {
 
-// Count the number of documents in the Donor collection
-Doner.countDocuments({})
-    .then(count => {
-        console.log('Number of donors:', count);
-    })
-    .catch(err => {
-        console.error('Error counting documents:', err);
-    });
-    Student.countDocuments({})
-    .then(countt => {
-        console.log('Number of studnet:', countt);
-    })
-    .catch(err => {
-        console.error('Error counting documents:', err);
-    });
+    const{donorId} = req.params;
+  const user = await Doner.findByIdAndDelete(donorId)
+  console.log("user is deleted " + user)
+  res.render('/admindonor')
+} catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+}
+
+})
+app.get('/adminstudent',async(req,res)=>{
+  const student = await Student.find();
+  res.render('listings/adminstudent.ejs',{student})
+})
+app.get('/admindeletestudent/:student_id',async(req,res)=>{
+  try {
+
+    const{student_id} = req.params;
+  const user = await Student.findByIdAndDelete(student_id)
+  console.log("user is deleted " + user)
+  res.redirect('/adminstudent')
+} catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+}
+
+})
+
+app.get('/adminsinup',async(req,res)=>{
+  const sinup = await SinUp.find();
+  res.render('listings/adminsinup.ejs',{sinup})
+})
+app.get('/admindeletesinup/:sinup_id',async(req,res)=>{
+  try {
+
+    const{sinup_id} = req.params;
+  const user = await Student.findByIdAndDelete(sinup_id)
+  console.log("user is deleted " + user)
+  res.redirect('/adminstudent')
+} catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+}
+
+})
