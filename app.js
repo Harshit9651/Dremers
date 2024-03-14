@@ -281,7 +281,7 @@ app.get('/logout', (req, res) => {
   
   
   
-   app.get("/student12th",isAuthenticatedstudent,(req,res)=>{
+   app.get("/student12th",(req,res)=>{
     const flashMessages = req.flash();
     res.render("listings/student12th.ejs")
    })
@@ -522,53 +522,55 @@ console.log("hello hii name" + req.session.user.userId);
  
  // You can now access studentId in other parts of your code or routes
  
- app.post("/newstudentpage2",upload.fields([
+ app.post("/newstudentpage2", upload.fields([
   { name: 'Statement', maxCount: 1 },
   { name: 'ElectricCityBill', maxCount: 1 },
   { name: 'StudentImage', maxCount: 1 },
   { name: 'marksheet11th', maxCount: 1 },
   { name: 'marksheet10th', maxCount: 1 },
   { name: 'latter', maxCount: 1 },
+]), async (req, res) => {
+  try {
+      const { FFname, FLname, FDOB, FEmail, FNumber, FAdhar, occupation, WName, WNumber, IFSC, tenth, evelenth, Accountno } = req.body;
+      const Statement = await uploadToCloudinary(req.files['Statement'][0]);
+      const marksheet10th = await uploadToCloudinary(req.files['marksheet10th'][0]);
+      const StudentImage = await uploadToCloudinary(req.files['StudentImage'][0]);
+      const marksheet11th = await uploadToCloudinary(req.files['marksheet11th'][0]);
+      const Electricitybill = await uploadToCloudinary(req.files['ElectricCityBill'][0]);
+      const latter = await uploadToCloudinary(req.files['latter'][0]);
 
-]), async(req,res)=>{
+      const Studnetfind = await Student.findByIdAndUpdate(studentId, {
+          FFName: FFname,
+          FLname: FLname,
+          FDOB: FDOB,
+          FEmail: FEmail,
+          FNumber: FNumber,
+          FAdhar: FAdhar,
+          occupation: occupation,
+          WName: WName,
+          WNumber: WNumber,
+          ElectricCityBill: Electricitybill,
+          Statement: Statement,
+          studentImage: StudentImage,
+          tenth: tenth,
+          evelenth: evelenth,
+          marksheet10th,
+          marksheet11th,
+          IFSC,
+          Accountno,
+          latter,
+      }, { new: true });
 
-  const {FFname,FLname,FDOB,FEmail,FNumber,FAdhar,occupation,WName,WNumber,IFSC,tenth,evelenth,Accountno} = req.body;
-  const Statement = await uploadToCloudinary(req.files['Statement'][0]);
-  const marksheet10th= await uploadToCloudinary(req.files['marksheet10th'][0]);
-  const StudentImage = await uploadToCloudinary(req.files['StudentImage'][0]);
-  const marksheet11th= await uploadToCloudinary(req.files['marksheet11th'][0]);
-  const Electricitybill= await uploadToCloudinary(req.files['ElectricCityBill'][0]);
-  const latter= await uploadToCloudinary(req.files['latter'][0]);
- 
-  const Studnetfind =  await  Student.findByIdAndUpdate(studentId,
-    {FFName:FFname,
-      FLname:FLname,
-      FDOB:FDOB,
-      FEmail:FEmail,
-      FNumber:FNumber,
-      FAdhar:FAdhar,
-      occupation:occupation,
-      WName:WName,
-      WNumber:WNumber,
-      ElectricCityBill:Electricitybill,
-      Statement:Statement,
-      studentImage:StudentImage,
-      tenth:tenth,
-      evelenth:evelenth,
-      marksheet10th,
-      marksheet11th,
-      IFSC,
-      Accountno,
-      latter,
-   
-
-    },{ new: true });
-
-
-console.log(Studnetfind)
-req.flash("success", "New Student Registerd");
- res.redirect('/donors')// pahle res.redrict("/l") tha
-}) 
+      console.log(Studnetfind)
+      req.flash("success", "New Student Registered");
+      res.redirect('/donors');
+  } catch (error) {
+      console.error(error);
+      const deletedStudent = await Student.findByIdAndDelete(studentId)
+   console.log(deletedStudent);
+      res.status(500).send("Internal Server Error {sorry Your page 1 data is reset so again fill up the form }");
+  }
+});
 
 
 
@@ -891,3 +893,23 @@ app.post('/Loanstory',async(req,res)=>{
 app.get('/aboutus',(req,res)=>{
   res.render('listings/aboutme.ejs')
 })
+app.get('/admin',(req,res)=>{
+  res.render('listings/admin.ejs')
+})
+// Count the number of documents in the Donor collection
+
+// Count the number of documents in the Donor collection
+Doner.countDocuments({})
+    .then(count => {
+        console.log('Number of donors:', count);
+    })
+    .catch(err => {
+        console.error('Error counting documents:', err);
+    });
+    Student.countDocuments({})
+    .then(countt => {
+        console.log('Number of studnet:', countt);
+    })
+    .catch(err => {
+        console.error('Error counting documents:', err);
+    });

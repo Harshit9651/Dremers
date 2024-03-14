@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0; /* Setting a background color for better visibility */
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -250px; /* Initially hide sidebar */
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: rgb(13, 144, 225);
+            color: #fff;
+            padding-top: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 10px;
+            font-size: 1.5rem;
+            text-align: center;
+            background-color: #222;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 10px;
+            color: #ccc;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #444;
+        }
+
+        .content {
+            margin-left: 0; /* Adjusted to start from 0 when the sidebar is hidden */
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .count-circle-container {
+            display: flex;
+            gap: 50px; /* Gap between circles */
+        }
+
+        .count-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .count-circle-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0;
+            z-index: 1;
+        }
+
+        .count-number {
+            font-size: 1.5rem;
+            animation: count-up 2s ease forwards;
+            opacity: 0;
+        }
+
+        /* Different colors for each count circle */
+        .donor-circle {
+            background-color: #ff5252; /* Red */
+        }
+
+        .student-circle {
+            background-color: #448aff; /* Blue */
+        }
+
+        .signup-circle {
+            background-color: #00c853; /* Green */
+        }
+
+        .menu-toggle {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            cursor: pointer;
+            z-index: 999; /* Ensure it's above other elements */
+            color: #1a0e11;
+            font-size: 1.5rem;
+        }
+
+        @keyframes count-up {
+            from {
+                opacity: 0;
+                transform: translateY(50%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu toggle icon -->
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        &#9776; <!-- Unicode for the menu icon -->
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            Admin Panel
+        </div>
+        <ul class="menu">
+            <li><a href="#" class="menu-item">Donor</a></li>
+            <li><a href="#" class="menu-item">Student</a></li>
+            <li><a href="#" class="menu-item">Signups</a></li>
+            <li><a href="#" class="menu-item">Others</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <!-- Count circles -->
+        <div class="count-circle-container">
+            <div class="count-circle donor-circle">
+                <div class="count-circle-inner">
+                    <span class="count-number">89</span> Donors
+                </div>
+            </div>
+            <div class="count-circle student-circle">
+                <div class="count-circle-inner">
+                    <span class="count-number">1000</span> Students
+                </div>
+            </div>
+            <div class="count-circle signup-circle">
+                <div class="count-circle-inner">
+                    <span class="count-number">1999</span> Signups
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to animate count-up for each circle
+        function animateCount(element, finalValue) {
+            let start = 0;
+            const duration = 2000; // Animation duration in milliseconds
+            const step = Math.ceil(finalValue / (duration / 50)); // Calculate step value for increment
+            const timer = setInterval(function () {
+                start += step;
+                if (start >= finalValue) {
+                    clearInterval(timer);
+                    start = finalValue;
+                }
+                element.textContent = start;
+            }, 50);
+        }
+
+        // Function to start count-up animation for each circle
+        function startCountUpAnimation() {
+            const countCircles = document.querySelectorAll('.count-circle-inner');
+            countCircles.forEach(circle => {
+                const finalValue = parseInt(circle.textContent, 10);
+                animateCount(circle.querySelector('.count-number'), finalValue);
+            });
+        }
+
+        // Call startCountUpAnimation when the page is fully loaded
+        window.addEventListener('load', startCountUpAnimation);
+
+        // Sidebar toggle function
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+
+            if (sidebar.style.left === '-250px') {
+                // If sidebar is hidden, show it
+                sidebar.style.left = '0';
+                content.style.marginLeft = '250px'; // Adjust content margin when sidebar is shown
+            } else {
+                // If sidebar is shown, hide it
+                sidebar.style.left = '-250px';
+                content.style.marginLeft = '0'; // Adjust content margin when sidebar is hidden
+            }
+        }
+    </script>
+</body>
+</html>
