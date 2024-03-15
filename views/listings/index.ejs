@@ -231,7 +231,37 @@ a {
   color: rgb(18, 20, 20);
   font-weight: 400;
 }
+  /* Custom CSS for the modal */
+  .modal-header {
+            background-color: #007bff;
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            font-size: 16px;
+        }
+
+        .modal-footer {
+            justify-content: space-between;
+            border-top: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
 </style>
+
 
 <body>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -384,6 +414,16 @@ Students
   setTimeout(function() {
     $('#educationLoanModal').modal('show');
   }, 5000);
+  $('.modal .close').on('click', function() {
+      $(this).closest('.modal').modal('hide');
+    });
+
+    // Function to close the modal when the backdrop is clicked
+    $('.modal').on('click', function(e) {
+      if ($(e.target).hasClass('modal')) {
+        $(this).modal('hide');
+      }
+    });
 </script>
 
 
