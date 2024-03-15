@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   role:String,
   password:String,
   number:Number,
+  token:String,
  
   
 })

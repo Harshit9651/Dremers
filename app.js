@@ -10,10 +10,11 @@ const app = express();
 const port = process.env.PORT ||3000;
 const path = require("path");
 const socketio = require('socket.io')
-const JWT = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const Filter = require('bad-words');
 const bycrpt = require("bcrypt");
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
@@ -688,14 +689,15 @@ if (existingUser) {
 
       // Hash the password using bcrypt
       const hashedPassword = await  bycrpt.hash(password, 10);
-
+      const token = jwt.sign({ email: email }, 'this is my first secrectin cookie', { expiresIn: '1h' }); // Adjust expiration as per your requirement
       // Create a new SinUP instance with the hashed password
       const userSignup = new SinUp({
           name,
           number,
           email,
      role,
-          password: hashedPassword // Store the hashed password
+          password: hashedPassword ,// Store the hashed password
+          token: token // Store the token
       });
 
       // Save the userSignup instance to the database
@@ -756,9 +758,101 @@ if (existingUser) {
   }
 });
 
+//////////////////////////////////////######## FORGOT PASSWORD ############////////////////////////////////
+function generateVerificationCode() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
+app.get('/resetpassword', (req, res) => {
+  res.render("listings/forgotpassword.ejs");
+});
 
 
-  
+// Route to send reset password email and verification code
+app.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+      const user = await SinUp.findOne({ email });
+      if (!user) {
+          res.send("Sorry, no user found with this email");
+      } else {
+          const id = user._id;
+          const verificationCode = generateVerificationCode();
+          
+let transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  port:465,
+  logger:true,
+  debug:true,
+  secure:true,
+  secureConnection:false,
+
+  auth: {
+    user:'dremersio@gmail.com', // Your Gmail email address
+    pass:'fdmp qqny iupt yfly',
+  },
+  tls:{
+      rejectUnAuthorized:true,
+  }
+});
+          // Send verification code to user's email
+          const mailOptions = {
+              from: 'dremersio@gmail.com', // Replace with your email
+              to: email,
+              subject: 'Password Reset Verification Code',
+              html: `
+              <p>Dear User,</p>
+              <p>Please use the following link to reset your password:</p>
+              <h3>${verificationCode}</h3>
+              <p>If you did not request a password reset, you can ignore this email.</p>
+          `
+          };
+          transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                  console.error(error);
+                  res.status(500).send("Error sending verification code");
+              } else {
+                  console.log('Email sent: ' + info.response);
+                  // Render the reset password page with the user's id and verification code
+                  res.render('listings/resetpassword.ejs', { id, verificationCode });
+              }
+          });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.post('/resetnow', async (req, res) => {
+  const { password, confirm, id ,code,verificationCode} = req.body;
+  if (password !== confirm) {
+    res.status(500).send("Internal Server Error");
+    return; // Added to prevent further execution
+  }
+    // Check if the verification code matches
+    if (code !== verificationCode) {
+      res.send("Invalid verification code");
+      return;
+  }
+
+  try {
+    // Use await with findByIdAndUpdate
+    const user = await SinUp.findByIdAndUpdate(id, { password: password });
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+    res.send("Password updated successfully");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+/////////////////////////////////////######### end up password #############//////////////////////////////  
 app.post('/sinIn', async (req, res) => {
   try {
       const { email, password,role } = req.body;
