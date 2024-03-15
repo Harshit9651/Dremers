@@ -1,7 +1,13 @@
 const express= require("express");
+
+const dotenv = require('dotenv'); // Import dotenv package
+
+dotenv.config();
+
 const app = express();
 
-const port = process.env.PORT|| 3000;
+
+const port = process.env.PORT ||3000;
 const path = require("path");
 const socketio = require('socket.io')
 const JWT = require("jsonwebtoken");
@@ -71,7 +77,7 @@ const store = new mongodbsession({
 })
 
 app.use(session({
-  secret:"this is my first secrectin cookie",
+  secret:process.env.SECRET_KEY,
   resave:false,
   saveUninitialized:false,
   store:store,
@@ -131,9 +137,9 @@ const cloudinary = require('cloudinary').v2;
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: 'drxgaesoh',
+  cloud_name:'drxgaesoh',
   api_key: '911397189256837',
-  api_secret: '3u2KB4BndKIcxurUbB7hz9Lsy2s'
+  api_secret: '3u2KB4BndKIcxurUbB7hz9Lsy2s',
 });
 
 // Configure MongoDB connection
@@ -281,7 +287,7 @@ app.get('/logout', (req, res) => {
   
   
   
-   app.get("/student12th",(req,res)=>{
+   app.get("/student12th",isAuthenticatedstudent,(req,res)=>{
     const flashMessages = req.flash();
     res.render("listings/student12th.ejs")
    })
@@ -387,6 +393,52 @@ const newdonerdata = await newdoner.save();
 console.log(newdonerdata);
 
 req.flash("success","New Donoer Registerd Successfully")
+let transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  port:465,
+  logger:true,
+  debug:true,
+  secure:true,
+  secureConnection:false,
+
+  auth: {
+    user:'programming966051@gmail.com', // Your Gmail email address
+    pass:'fdmp qqny iupt yfly',
+  },
+  tls:{
+      rejectUnAuthorized:true,
+  }
+});
+
+let mailOptions = {
+  from:'programming966051@gmail.com', // Sender address
+  to: Email, // List of receivers
+  subject: ' Confirmation: Your Form Submission on Dreamers Platform', // Subject line
+  html: ` <p>Dear ${Fname},</p>
+  <p>Congratulations!</p>
+  <p>We are pleased to inform you that your form has been successfully submitted on the Dreamers platform. Your registration as a donor signifies your commitment to making a positive impact in the lives of students in need.</p>
+  <p>At Dreamers, we believe in the transformative power of education and the significant role that donors like you play in shaping the future of aspiring students. Your generosity has the potential to change someone's life and provide them with the opportunity to pursue their educational dreams.</p>
+  <p>We are grateful for your decision to join our mission of fostering academic excellence and bridging the gap between ambition and opportunity. Your support is invaluable in creating a brighter future for deserving students and empowering them to achieve their goals.</p>
+  <p>Thank you for registering with Dreamers. We appreciate your dedication to making a difference, and we look forward to working together to inspire hope and transform lives through education.</p>
+  <p>If you have any questions or require further assistance, please do not hesitate to contact us at [your contact information].</p>
+  <p>Once again, thank you for your generosity and commitment to our cause.</p>
+  <p>Best regards,</p>
+  <p>Harshit Sharma<br>
+  Founder of Dremers <br>
+  Dreamers Platform Team</p>
+  ` // HTML formatted body
+};
+// Send email
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+      console.log(error);
+      res.status(500).send('Error sending email');
+  } else {
+      console.log('Email sent: ' + info.response);
+      req.flash('success', 'Welcome! You have successfully signed up.');
+      res.redirect('/')
+  }
+});
 res.redirect("/") // pahle res.redrict("/l") tha
 
 
@@ -562,7 +614,52 @@ console.log("hello hii name" + req.session.user.userId);
       }, { new: true });
 
       console.log(Studnetfind)
+      const student = Student.findById(studentId);
+      const email = student.Email;
       req.flash("success", "New Student Registered");
+      let transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        port:465,
+        logger:true,
+        debug:true,
+        secure:true,
+        secureConnection:false,
+
+        auth: {
+          user:'dremersio@gmail.com', // Your Gmail email address
+          pass:'fdmp qqny iupt yfly',
+        },
+        tls:{
+            rejectUnAuthorized:true,
+        }
+    });
+
+    let mailOptions = {
+        from: 'dremersio@gmail.com', // Sender address
+        to: email, // List of receivers
+        subject: ' Congratulations! Your Form Submission on Dreamers Website', // Subject line
+        html: `<p>Dear student, you have successfully registered on Dreamers.</p>
+        <p>Dreamers is a unique platform dedicated to fostering the dreams of ambitious students who aspire for greater heights but are hindered by financial constraints. As a student, you have the opportunity to seek financial assistance to fuel your academic journey, while as a donor, you can make a meaningful difference by supporting deserving children in need.</p>
+        <p>At Dreamers, we believe in the power of education to transform lives and communities. We provide a platform where students can turn their aspirations into reality, regardless of their financial circumstances. Our community of donors generously contributes to the academic endeavors of bright young minds, empowering them to pursue their dreams without limitations.</p>
+        <p>Whether you are a student seeking support or a donor looking to make a positive impact, Dreamers welcomes you to join our mission of bridging the gap between ambition and opportunity. Together, we can create a brighter future for aspiring students and inspire hope for generations to come.</p>
+        <p>Thank you for choosing Dreamers. We look forward to embarking on this journey with you.</p>
+        <p>Warm regards,</p>
+        <p>Harshit Sharma<br>
+        Founder of Dreamers <br>
+        Dreamers Team</p>
+        ` // HTML formatted body
+    };
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error sending email');
+        } else {
+            console.log('Email sent: ' + info.response);
+            req.flash('success', 'Welcome! You have successfully signed up.');
+            res.redirect('/')
+        }
+    });
       res.redirect('/donors');
   } catch (error) {
       console.error(error);
@@ -621,7 +718,7 @@ app.post('/sinUp', async (req, res) => {
           from: 'dremersio@gmail.com', // Sender address
           to: email, // List of receivers
           subject: 'Welcome to Dremers', // Subject line
-          html: `<p>Dear ${name} you succesfullu registered is dremers </p>
+          html: `<p>Dear ${name} you succesfully registered is dremers </p>
           <p>Dremers is a unique platform dedicated to fostering the dreams of ambitious students who aspire for greater heights but are hindered by financial constraints. As a student, you have the opportunity to seek financial assistance to fuel your academic journey, while as a donor, you can make a meaningful difference by supporting deserving children in need.</p>
           <p>At Dremers, we believe in the power of education to transform lives and communities. We provide a platform where students can turn their aspirations into reality, regardless of their financial circumstances. Our community of donors generously contributes to the academic endeavors of bright young minds, empowering them to pursue their dreams without limitations.</p>
           <p>Whether you are a student seeking support or a donor looking to make a positive impact, Dremers welcomes you to join our mission of bridging the gap between ambition and opportunity. Together, we can create a brighter future for aspiring students and inspire hope for generations to come.</p>
@@ -720,12 +817,12 @@ app.get('/search', async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
-app.get('/students',async(req,res)=>{
+app.get('/students',isAuthenticatedstudent,async(req,res)=>{
   const data = await Student.find();
   res.render('listings/test.ejs',{data})
 })
   
-app.get('/donors',async(req,res)=>{
+app.get('/donors',isAuthenticatedstudent,async(req,res)=>{
   const donerdata = await Doner.find();
   res.render('listings/doners.ejs',{donerdata})
 })
@@ -762,8 +859,8 @@ app.post('/mail', async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: 'dremersio@gmail.com', // Your Gmail email address
-        pass: 'fdmp qqny iupt yfly' // Your Gmail password
+        user: process.env.USER, // Your Gmail email address
+        pass: process.env.PASS // Your Gmail password
       },
       tls: {
         rejectUnauthorized: false
@@ -840,7 +937,7 @@ try {
 })
 // Assuming you have an array of scholarships named scholarships
 
-app.get('/homepagescholership',(req,res)=>{
+app.get('/homepagescholership',isAuthenticatedstudent,(req,res)=>{
   res.render('listings/scholershipHomepage.ejs')
 })
 app.get('/EducationLoans',async(req,res)=>{
@@ -955,5 +1052,31 @@ app.get('/admindeletesinup/:sinup_id',async(req,res)=>{
     console.error(error);
     res.status(500).send('Internal Server Error');
 }
+
+})
+
+app.get('/adminlogin',(req,res)=>{
+  res.render('listings/adminsin.ejs')
+})
+app.post("/adminsinIn",(req,res)=>{
+  try{
+    const{email,role,password} = req.body;
+    if(email!='programming966051@gmail.com'){
+      res.redirect('/');
+    }
+    else if(role!="Admin" ){
+      res.redirect('/');
+    }
+   else  if(password!='966051harshit'){
+res.redirect('/');
+    }
+    else{
+      res.redirect('/admin');
+    }
+  }catch{
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+
 
 })
