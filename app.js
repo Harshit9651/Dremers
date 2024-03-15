@@ -680,6 +680,11 @@ app.post('/sinUp', async (req, res) => {
       if (!name || !number || !email || !role || !password) {
           return res.status(400).json({ error: "Missing required fields" });
       }
+      // Check if the email already exists in the database
+const existingUser = await SinUp.findOne({ email: email });
+if (existingUser) {
+    return res.status(400).json({ error: "Email already exists" });
+}
 
       // Hash the password using bcrypt
       const hashedPassword = await  bycrpt.hash(password, 10);
