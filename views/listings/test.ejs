@@ -29,22 +29,14 @@
             margin-right: 200px; /* Add margin to separate logo from search bar */
         }
 
-        .search-bar {
+        .category-buttons {
             display: flex;
             align-items: center;
-            flex-grow: 1;
         }
 
-        .search-bar input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-        }
-
-        .search-bar button {
+        .category-buttons button {
             padding: 10px 15px;
-            margin-left: 10px; /* Add margin to create gap between input and button */
+            margin-right: 10px;
             border: none;
             background-color: #555;
             color: #fff;
@@ -52,23 +44,8 @@
             border-radius: 5px;
         }
 
-        .search-bar button:hover {
+        .category-buttons button:hover {
             background-color: #777;
-        }
-
-        @media screen and (max-width: 768px) {
-            .logo {
-                font-size: 20px;
-                margin-right: 10px; /* Adjust margin for smaller screens */
-            }
-
-            .search-bar input[type="text"] {
-                padding: 8px;
-            }
-
-            .search-bar button {
-                padding: 8px 12px;
-            }
         }
 
         .row {
@@ -127,15 +104,51 @@
             visibility: visible;
             opacity: 1;
         }
+        
+        @media screen and (max-width: 768px) {
+            .logo {
+                font-size: 20px;
+                margin-right: 10px; /* Adjust margin for smaller screens */
+            }
+
+            .category-buttons button {
+                padding: 8px 12px;
+            }
+        }
+        @media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .category-buttons {
+        margin-top: 10px;
+    }
+
+    .category-buttons button {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+}
+
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
             <div class="logo">Dremers</div>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search by cast...">
-                <button onclick="search()">Search</button>
+            <div class="category-buttons">
+                <button onclick="navigateTo('/genstudent')">General</button>
+                <button onclick="navigateTo('/obcstudent')">OBC</button>
+                <button onclick="navigateTo('/scstudent')">SC</button>
+                <button onclick="navigateTo('/ststudent')">ST</button>
+                <button onclick="navigateTo('/otherstudent')">Others</button>
             </div>
         </div>
     </nav>
@@ -160,13 +173,9 @@
     </div>
 
     <script>
-      function search() {
-    var caste = document.getElementById('searchInput').value;
-
-    // Redirect to the search route with the caste query parameter
-    window.location.href = '/search?caste=' + caste;
-}
-
+        function navigateTo(url) {
+            window.location.href = url;
+        }
     </script>
 </body>
 </html>

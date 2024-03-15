@@ -997,6 +997,7 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+///////////////////////////////####### ADMIN && SCHOLERSHIPS #################/////////////////////////////////////////////////////////////////////
 app.get("/scholarshipsc", async(req, res) => {
  const scholarships = await Scholer.find();
  res.render('listings/displyscholer.ejs',{scholarships})
@@ -1177,5 +1178,64 @@ res.redirect('/');
     res.status(500).send('Internal Server Error');
   }
 
+
+})
+///////////////////////////////####### ADMIN && SCHOLERSHIPS  END #################///////////////////////////////////////////////////////////////
+
+///////////////////////////////####### Studnets catagoery Start #################//////////////////////////////
+
+//GENERL
+
+app.get('/genstudent',async(req,res)=>{
+  try{
+  const Generl= 'Gen' 
+  const generalstudent = await Student.find({Caste:Generl});
+  res.render("listings/genStudent",{generalstudent});
+  }catch(err){
+res.status(500).send("internal error "+ err);
+  }
+
+})
+//OBC
+app.get('/obcstudent',async(req,res)=>{
+  try{
+  const obc= 'OBC' 
+  const OBCstudent = await Student.find({Caste:obc});
+  res.render("listings/obcStudent",{OBCstudent});
+  }catch(err){
+res.status(500).send("internal error "+ err);
+  }
+
+})
+
+//SC 
+app.get('/scstudent',async(req,res)=>{
+  try{
+  const SC= 'SC' 
+  const SCstudent = await Student.find({Caste:SC});
+  res.render("listings/scStudent",{SCstudent});
+  }catch(err){
+res.status(500).send("internal error "+ err);
+  }
+
+})
+app.get('/ststudent',async(req,res)=>{
+  try{
+  const ST= 'ST' 
+  const ststudent = await Student.find({Caste:ST});
+  res.render("listings/stStudent",{ststudent});
+  }catch(err){
+res.status(500).send("internal error "+ err);
+  }
+
+})
+app.get('/otherstudent',async(req,res)=>{
+  try{
+  const other= 'OTHER' 
+  const otherstudent = await Student.find({Caste:other});
+  res.render("listings/otherStudent",{otherstudent});
+  }catch(err){
+res.status(500).send("internal error "+ err);
+  }
 
 })

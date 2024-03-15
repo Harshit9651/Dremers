@@ -1,0 +1,98 @@
+
+<% layout("/layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/style/syle.css">
+<link rel="stylesheet" href="/style/mainshow.css">
+<style>
+    .row {
+        
+        min-height: 100vh;
+        margin-top: 5rem !important;
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        border: none !important;
+        margin-bottom: 2rem;
+        background-color: #092a42;
+        color: bisque;
+        
+    }
+
+    .card-img-top {
+        border-radius: 1rem !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        transition: filter 0.5s ease-in-out;
+    }
+
+    .card:hover .card-img-top {
+        filter: blur(5px); /* Adjust the blur amount as needed */
+        background-color: aqua;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+     padding-left: 5px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        background-color: aquamarine;
+    }
+
+    .card:hover .overlay {
+        background-color: black;
+        border-radius: 10px;
+        height: 15ren;
+        opacity: 1;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    #cat {
+        color: wheat;
+    }
+
+    #for {
+        color: blanchedalmond;
+    }h2{
+        color: black;
+    }
+ 
+</style>
+<body>
+    <div class=" row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+      
+        <% for(let dataa of otherstudent) { %>
+            <a class="a-colr" href="/studentinformation/<%= dataa._id %>">
+                <div class="card-col hover">
+                   
+                    <div class="card">
+                        <img src="<%= dataa.studentImage %>" class="card-img-top" style="height: 20rem;"
+                            alt="listing image">
+                        <div class="overlay">
+                            <p><b>Name:</b> <%= dataa.Fname %> <%= dataa.Lname %>
+                            <br>
+                            <br>
+                          <b>Descripition</b> <%= dataa.Descripition %>
+                          <br>
+                          <br>
+                          <b>Father name:</b><%= dataa.FFName %> &nbsp;<%= dataa.FLname %>
+                          <br>
+                          <br>
+                          <b>Father Work:</b><%= dataa.occupation%>
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</body>
