@@ -1,3 +1,4 @@
+User
 <!-- In your HTML/EJS file -->
 <% layout("/layouts/boilerplate") %>
 <link rel="stylesheet" href="/style/syle.css">
@@ -56,6 +57,12 @@
     font-weight: 900;
     font-size: 1.5rem;
   }
+  .btn {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
 </style>
 
 <body>
@@ -69,11 +76,11 @@
                 <%= data.Fname %>   <%= data.Lname %>
                 <br>
                 <p><b>Description:</b><%= data.Descripition %></p>
-                <h5><b>Donation Amount:<%= data.Amount %></b></h5>
+         
                 <p id="cat"><b>Category:<%= data.For %></b></p>
                 <!-- Email Now button -->
                 <!-- Button to open the email modal -->
-                <a href="/sendEmail?donorId=<%= data._id %>"> <button class="btn btn-success"> hello</button></a>
+                <a href="/sendEmail?donorId=<%= data._id %>"> <button class="btn btn-success">mail now </button></a>
   
               
               </h5>
@@ -84,9 +91,3 @@
     </div>
  
     </body>
-  
-    <!-- Your existing HTML/EJS content -->
-  
-    <!-- Script for handling form submission -->
-    
-

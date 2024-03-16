@@ -921,7 +921,7 @@ app.get('/students',isAuthenticatedstudent,async(req,res)=>{
   res.render('listings/test.ejs',{data})
 })
   
-app.get('/donors',isAuthenticatedstudent,async(req,res)=>{
+app.get('/donors',async(req,res)=>{
   const donerdata = await Doner.find();
   res.render('listings/doners.ejs',{donerdata})
 })
@@ -1112,7 +1112,7 @@ app.get('/admindeletedonor/:donorId',async(req,res)=>{
     const{donorId} = req.params;
   const user = await Doner.findByIdAndDelete(donorId)
   console.log("user is deleted " + user)
-  res.render('/admindonor')
+  res.redirect('/admindonor')
 } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
