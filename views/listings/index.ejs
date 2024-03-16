@@ -1,5 +1,8 @@
 
 <% layout("/layouts/boilerplate") %>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2225138889895982"
+crossorigin="anonymous"></script></head>
 
 
 <link rel="stylesheet" href="/style/syle.css">
@@ -260,11 +263,92 @@ a {
             background-color: #0056b3;
             border-color: #0056b3;
         }
+        #sidebar{
+          color:#dc3545 !important;
+          font-size: 4rem !important;
+        }
+     
+    /* CSS for "About Me" button */
+    .about-me-btn {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      background-color: #dcf30ae8;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: none; /* Initially hide the button */
+      z-index: 999; /* Ensure it appears above other content */
+    }
+    body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.content {
+  margin-bottom: 20px;
+}
+
+.offers ul {
+  list-style: none;
+  padding: 0;
+}
+
+.offers h2 {
+  color: #007bff;
+}
+
+.offers li {
+  margin-bottom: 20px;
+}
+
+footer {
+  background-color: #f4f4f4;
+  color: #333;
+  text-align: center;
+  padding: 20px 0;
+}
+#enpower{
+  color:aqua;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+#why{
+  color:aqua;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+#strong{
+  color:aqua;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+#last{
+  color: aqua;
+  font-weight: 700;
+}
+  
 </style>
 
 
 <body>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <a href="/aboutus" class="about-me-btn" id="aboutMeBtn">scholerships</a>
   <!-- Modal -->
 <div class="modal fade" id="educationLoanModal" tabindex="-1" role="dialog" aria-labelledby="educationLoanModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -306,7 +390,7 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
 <hr>
 <div class="sec row justify-content-center">
   <div class="col-md-3 pa">
-DONERS
+<h1>DONERS</h1>
   </div>
 </div>
 <!--second for doners  justify-content-around -->
@@ -329,7 +413,7 @@ DONERS
 
 <div class="thrd row justify-content-center">
   <div class="col-md-3 pa">
-Students
+<h1>STUDENTS</h1>
   </div>
 </div>
 <div class=" row mt-3 mncard justify-content-around  row-cols-lg-4  row-cols-md-3  row-cols-xs-3" >
@@ -352,7 +436,7 @@ Students
 <div class="row justify-content-center mt-5">
   <div class="col-md-8">
     <div class="text-center">
-      <h2>Empowering Students with Scholarships</h2>
+      <h2 id="enpower">Empowering Students with Scholarships</h2>
       <p>At Dremers, we are dedicated to providing opportunities for students through various scholarships and funding programs. We believe in nurturing talent and supporting educational endeavors to create a brighter future.</p>
     </div>
   </div>
@@ -369,6 +453,22 @@ Students
     <p>Additionally, we welcome new foundations and organizations to collaborate with us in our mission to support students' educational aspirations. Together, we can build a strong network of support and make a lasting impact on the lives of students across the globe.</p>
   </div>
 </div>
+<div class="row justify-content-center mt-3">
+  <div class="col-md-8">
+    <h3 id="why">Why Dremers</h3>
+    <p>Dremers is a unique platform designed to empower students by providing access to various scholarship opportunities and educational resources. Here, students can seamlessly apply for ongoing scholarships and connect with foundations at absolutely no cost. Whether you're seeking guidance on how to secure an education loan or facing challenges due to financial constraints, Dremers has got you covered.</p>
+    
+    <p><strong id="strong">What Dremers Offers:</strong></p>
+    <ul>
+      <li>Scholarship Opportunities: Explore a wide range of scholarship programs and easily apply to those that match your qualifications and interests.</li>
+      <li>Foundation Connection: Connect directly with foundations and organizations offering scholarships and educational support, simplifying the process of seeking financial aid.</li>
+      <li>Expert Guidance: Get expert advice and guidance on navigating the complexities of securing an education loan, ensuring you make informed decisions about your financial future.</li>
+      <li>Financial Assistance Solutions: Find solutions to common financial challenges students face, such as dealing with unexpected expenses or family financial crises. Dremers provides valuable insights and resources to help you overcome these hurdles effectively.</li>
+    </ul>
+    
+    <p id="last">At Dremers, our mission is to make the pursuit of education more accessible and manageable for students everywhere. Join us today and take the first step towards realizing your academic aspirations!</p>
+  </div>
+</div>
 
 
 
@@ -376,39 +476,7 @@ Students
     </div>
  
 <!-- JavaScript for handling icon visibility -->
-<script>
-  let lastScrollTop = 0;
-  let isScrollingUp = false;
 
-  window.addEventListener('scroll', function() {
-    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (currentScroll > lastScrollTop) {
-      // Scroll down
-      isScrollingUp = false;
-    } else {
-      // Scroll up
-      isScrollingUp = true;
-    }
-
-    lastScrollTop = currentScroll;
-
-    // Toggle the visibility of the icons based on the scrolling direction
-    toggleMobileIcons();
-  }, false);
-
-  function toggleMobileIcons() {
-    let mobileIcons = document.getElementById('mobileBottomIcons');
-
-    if (isScrollingUp) {
-      // Scroll up, show the icons
-      mobileIcons.style.display = 'flex';
-    } else {
-      // Scroll down, hide the icons
-      mobileIcons.style.display = 'none';
-    }
-  }
-</script>
 <script>
   // Function to show the education loan modal after 5 seconds
   setTimeout(function() {
@@ -424,6 +492,32 @@ Students
         $(this).modal('hide');
       }
     });
+
+</script>
+<script>
+  // Function to toggle the visibility of the "About Me" button based on scroll direction
+  let lastScrollTop = 0;
+  let aboutMeBtn = document.getElementById('aboutMeBtn');
+
+  window.addEventListener('scroll', function() {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop) {
+      // Scroll down
+      aboutMeBtn.style.display = 'none';
+    } else {
+      // Scroll up
+      aboutMeBtn.style.display = 'block';
+    }
+
+    lastScrollTop = currentScroll;
+  });
+
+  // Event listener for the "About Me" button to navigate to another route
+  aboutMeBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default link behavior
+    window.location.href = this.getAttribute('href'); // Navigate to the specified route
+  });
 </script>
 
 
