@@ -839,12 +839,14 @@ app.post('/resetnow', async (req, res) => {
 
   try {
     // Use await with findByIdAndUpdate
-    const user = await SinUp.findByIdAndUpdate(id, { password: password });
+    console.log(password);
+    const hashedPassword = await  bycrpt.hash(password, 10);
+    const user = await SinUp.findByIdAndUpdate(id, { password: hashedPassword });
     if (!user) {
       res.status(404).send("User not found");
       return;
     }
-    res.send("Password updated successfully");
+    res.redirect('/sinIn')
   } catch (err) {
     console.error(err);
     res.status(500).send("Internal Server Error");
