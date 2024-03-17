@@ -96,6 +96,34 @@
     outline: none; /* Remove focus outline */
     border-color: #007bff; /* Border color on focus */
 }
+
+/* New CSS for password visibility toggle */
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.message-container a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #dddd16;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .message-container a:hover {
+            background-color: #0056b3;
+        }
+        .reset{
+            color: rgb(226, 54, 19) !important;
+        }
+
+
     </style>
 </head>
 <body>
@@ -113,12 +141,34 @@
                     <option value="student">As Student</option>
                 </select>
             </div>
-            <input type="password" name="password" placeholder="Password" required>
+            <div style="position: relative;">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="password-toggle" onclick="togglePasswordVisibility()">
+                    Show
+                </span>
+            </div>
             <input type="submit" value="Sign In">
         </form>
-        <p class="message">Forgot your password? <a href="/resetpassword">Reset Password  </a></p>
-        <p class="message"> <a href="/sinup">SignUp Now </a></p>
+     <!--  <p class="message">Forgot your password? <a href="/resetpassword">Reset Password  </a></p>
+        <p class="message"> <a href="/sinup">SignUp Now </a></p>-->
+        <div class="message-container">
+            <a id="reset" href="/resetpassword"> reset password?</a>
+            <a href="/sinup">Sign Up Now</a>
+        </div>
    
     </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.querySelector('.password-toggle').textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.querySelector('.password-toggle').textContent = "Show";
+            }
+        }
+    </script>
 </body>
 </html>
