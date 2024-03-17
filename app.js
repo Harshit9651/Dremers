@@ -1244,3 +1244,6 @@ res.status(500).send("internal error "+ err);
 app.get('/g',(req,res)=>{
   res.render("listings/aboutus2.ejs")
 })
+app.get('/error',(req,res)=>{
+  res.render('listings/error.ejs')
+})
