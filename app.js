@@ -267,7 +267,7 @@ app.get("/donerdtail/:id",async(req,res)=>{
 
 
 
-app.get("/donerinput",isAuthenticateddonor,(req,res)=>{
+app.get("/donerinput",(req,res)=>{
   const flashMessages = req.flash();
   res.render("listings/donerinput.ejs")
 })
@@ -288,7 +288,7 @@ app.get('/logout', (req, res) => {
   
   
   
-   app.get("/student12th",isAuthenticatedstudent,(req,res)=>{
+   app.get("/student12th",(req,res)=>{
     const flashMessages = req.flash();
     res.render("listings/student12th.ejs")
    })
@@ -1039,7 +1039,7 @@ try {
 })
 // Assuming you have an array of scholarships named scholarships
 
-app.get('/homepagescholership',isAuthenticatedstudent,(req,res)=>{
+app.get('/homepagescholership',(req,res)=>{
   res.render('listings/scholershipHomepage.ejs')
 })
 app.get('/EducationLoans',async(req,res)=>{
