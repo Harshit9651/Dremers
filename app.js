@@ -62,6 +62,7 @@ const CLOUD = require("./src/models/cloudn.js");
 const SinUp = require('./src/models/sinUp.js');
 const Scholer = require('./src/models/scholer.js');
 const EducationLoan = require('./src/models/educationLoan.js');
+const Review = require('./src/models/review.js');
 
 
 
@@ -1251,3 +1252,35 @@ app.get('/g',(req,res)=>{
 app.get('/error',(req,res)=>{
   res.render('listings/error.ejs')
 })
+///////////////////////////////########## Comment  & review ###########////////////////////////
+app.get('/review',(req,res)=>{
+  res.render('listings/review.ejs')
+})
+app.post('/submit_review', upload.fields([
+  { name: 'photo', maxCount: 1 },
+]), async (req, res) => {
+  try {
+    const { name, review, role, rating } = req.body;
+    if (!name || !review || !role || !rating) {
+      return res.status(400).send("Please provide all required fields.");
+    }
+
+    if (!req.files || !req.files['photo'] || req.files['photo'].length === 0) {
+      return res.status(400).send("Please upload a photo.");
+    }
+
+    const photo = await uploadToCloudinary(req.files['photo'][0]);
+    if (!photo) {
+      return res.status(500).send("Failed to upload photo.");
+    }
+
+    console.log(name, review, role, rating, photo);
+    const Reviewstore = await new Review({ name, review, role, rating, photo });
+    console.log(Reviewstore);
+
+    res.send("Review added successfully.");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("An error occurred while processing your request.");
+  }
+});

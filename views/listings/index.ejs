@@ -342,6 +342,37 @@ footer {
   color: aqua;
   font-weight: 700;
 }
+/* Add this CSS to your existing styles or in a separate CSS file */
+.review-section {
+  margin-top: 5rem;
+}
+
+.review {
+  max-width: 400px; /* Adjust this value as needed */
+  margin: 0 auto;
+}
+
+.reviewer-image {
+  width: 100px; /* Adjust this value as needed */
+  height: 100px; /* Adjust this value as needed */
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.blockquote {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #fff; /* Adjust text color as needed */
+  border-left: none;
+  margin: 0;
+  padding: 0;
+}
+
+.blockquote p {
+  margin: 0;
+  padding: 0;
+}
+
   
 </style>
 
@@ -470,6 +501,24 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
   </div>
 </div>
 
+<!-- Add this section after your existing content, before the footer -->
+<div class="review-section">
+  <div class="container">
+    <h2>Reviews</h2>
+    <div class="row">
+      <% for(let review of reviews) { %>
+        <div class="col-md-6">
+          <div class="review">
+            <img src="<%= review.photo %>" alt="Reviewer Photo" class="reviewer-image">
+            <blockquote>
+              <p><%= review.comment %></p>
+            </blockquote>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
 
 
     <!-- container-fluid-->
