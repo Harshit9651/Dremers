@@ -894,6 +894,10 @@ if(user.role=='donor'){
   const data = await Student.find();
   res.render("listings/test.ejs",{data})
 }
+if(user.role='student'){
+  const donerdata = await Doner.find();
+  res.render('listings/doners.ejs',{donerdata})
+}
   } catch (error) {
       console.error(error);
       req.flash('error', 'Invalid credentials'); // Set flash message for error
