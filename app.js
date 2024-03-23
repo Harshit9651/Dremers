@@ -129,6 +129,24 @@ const isAuthenticateddonor = (req, res, next) => {
     return res.redirect('/sinIn');
   }
 };
+const isAuthenticatedAdmin = (req, res, next) => {
+  if (req.session.admin) {
+    // Check if user is authenticated
+    const { role } = req.session.user;
+    if (role === 'Admin') {
+      // User is a donor, allow access to the page
+      return next();
+    } else {
+      // User is not a donor, redirect to homepage with an error message
+      req.flash('error', 'You are not authorized to access this page.');
+      return res.redirect('/adminlogin');
+    }
+  } else {
+    // User is not authenticated, redirect to login page with a flash message
+    req.flash('error', 'Please login to access this page.');
+    return res.redirect('/adminlogin');
+  }
+};
 //////////////////////////######## Authentication code end ####////////////
 
 const multer = require('multer');
@@ -1112,7 +1130,7 @@ app.get('/admin', async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
-app.get('/admindonor',async(req,res)=>{
+app.get('/admindonor',isAuthenticatedAdmin,async(req,res)=>{
   const donor = await Doner.find();
   res.render('listings/admindonor.ejs',{donor})
 })
@@ -1129,7 +1147,7 @@ app.get('/admindeletedonor/:donorId',async(req,res)=>{
 }
 
 })
-app.get('/adminstudent',async(req,res)=>{
+app.get('/adminstudent',isAuthenticatedAdmin,async(req,res)=>{
   const student = await Student.find();
   res.render('listings/adminstudent.ejs',{student})
 })
@@ -1147,7 +1165,7 @@ app.get('/admindeletestudent/:student_id',async(req,res)=>{
 
 })
 
-app.get('/adminsinup',async(req,res)=>{
+app.get('/adminsinup',isAuthenticatedAdmin,async(req,res)=>{
   const sinup = await SinUp.find();
   res.render('listings/adminsinup.ejs',{sinup})
 })
@@ -1190,6 +1208,26 @@ res.redirect('/');
 
 
 })
+
+app.get('/adminReview',isAuthenticatedAdmin,async(req,res)=>{
+  const review = await Review.find();
+  res.render('listings/adminReview.ejs',{review})
+})
+app.get('/admindeletReview/:review_id',async(req,res)=>{
+  try {
+
+    const{review_id} = req.params;
+  const user = await Review.findByIdAndDelete(review_id)
+  console.log("user is deleted " + user)
+  res.redirect('/adminReview')
+} catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+}
+
+})
+
+
 ///////////////////////////////####### ADMIN && SCHOLERSHIPS  END #################///////////////////////////////////////////////////////////////
 
 ///////////////////////////////####### Studnets catagoery Start #################//////////////////////////////

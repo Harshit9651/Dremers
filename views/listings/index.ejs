@@ -404,9 +404,9 @@ footer {
 }
 
 .reviewer-image {
-  width: 150px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
-  border-radius: 50%;
+  width: 200px; /* Adjust as needed  150 both*/
+  height: 200px; /* Adjust as needed */
+  border-radius: 50% ;
   margin-bottom: 20px;
 }
 
@@ -427,7 +427,18 @@ footer {
 .star-rating i:not(:last-child) {
   margin-right: 5px;
 }
+/* New styles for mobile devices */
+@media (max-width: 576px) {
+  .review-section {
+    padding: 30px 0; /* Reduce padding for smaller screens */
+  }
 
+  .reviewer-image {
+    width: 150px; /* Adjusted to 150px for mobile */
+    height: 150px; /* Adjusted to 150px for mobile */
+    border-radius: 50%; /* Adjusted border radius for mobile */
+  }
+}
   
 </style>
 
@@ -563,6 +574,7 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
     <% for(let review of reviews) { %>
       <div class="review-slide">
         <div class="review-content">
+          
           <img src="<%= review.photo %>" alt="Reviewer Photo" class="reviewer-image">
           <div class="review-details"> 
               <p class="review-name"> <b>Name: </b><%= review.name %></p>
