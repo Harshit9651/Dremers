@@ -9,10 +9,11 @@
     <title> Admin Sign In</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace; /* Monospace font for hacker vibe */
             margin: 0;
             padding: 0;
-            background-color: #292626;
+            background-color: #000; /* Dark background color */
+            color: #0f0; /* Green text color */
         }
 
         .container {
@@ -20,14 +21,14 @@
             max-width: 400px;
             margin: 100px auto;
             padding: 30px 20px; /* Increased padding */
-            background-color: #e6e7e3;
+            background-color: #111; /* Dark background color */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1); /* Green shadow */
         }
 
         h2 {
             text-align: center;
-            color: #333;
+            color: #0f0; /* Green text color */
             margin-bottom: 30px;
         }
 
@@ -36,17 +37,19 @@
             width: 100%;
             padding: 15px; /* Increased padding */
             margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #0f0; /* Green border */
             border-radius: 5px;
             box-sizing: border-box;
             font-size: 16px;
+            background-color: #000; /* Dark background color */
+            color: #0f0; /* Green text color */
         }
 
         input[type="submit"] {
             width: 100%;
             padding: 15px; /* Increased padding */
-            background-color: #007bff;
-            color: #fff;
+            background-color: #0f0; /* Green button background color */
+            color: #000; /* Black text color */
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -55,12 +58,12 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #007700; /* Dark green on hover */
         }
 
         .message {
             text-align: center;
-            color: #dc3545;
+            color: #f00; /* Red message color */
             margin-top: 20px;
         }
 
@@ -70,32 +73,33 @@
                 padding: 20px; /* Adjusted padding */
             }
         }
-              /* CSS for role option */
-#role {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 16px;
-    appearance: none; /* Remove default arrow */
-    -webkit-appearance: none; /* Remove default arrow for WebKit browsers */
-    -moz-appearance: none; /* Remove default arrow for Mozilla browsers */
-    background-color: #fff; /* Background color */
-    color: #333; /* Text color */
-    cursor: pointer;
-    margin-bottom: 20px;
-}
+        
+        /* CSS for role option */
+        #role {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #0f0; /* Green border */
+            box-sizing: border-box;
+            font-size: 16px;
+            appearance: none; /* Remove default arrow */
+            -webkit-appearance: none; /* Remove default arrow for WebKit browsers */
+            -moz-appearance: none; /* Remove default arrow for Mozilla browsers */
+            background-color: #000; /* Dark background color */
+            color: #0f0; /* Green text color */
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
 
-#role option {
-    background-color: #fff; /* Background color */
-    color: #333; /* Text color */
-}
+        #role option {
+            background-color: #000; /* Dark background color */
+            color: #0f0; /* Green text color */
+        }
 
-#role:focus {
-    outline: none; /* Remove focus outline */
-    border-color: #007bff; /* Border color on focus */
-}
+        #role:focus {
+            outline: none; /* Remove focus outline */
+            border-color: #0f0; /* Green border color on focus */
+        }
     </style>
 </head>
 <body>
@@ -108,7 +112,6 @@
             <div class="form-group">
                 <label for="role"> Select your Role</label>
                 <select id="role" name="role" required>
-                  
                     <option value="Admin">As Admin </option>
                     <option value="Other">As Student</option>
                 </select>
@@ -116,8 +119,6 @@
             <input type="password" name="password" placeholder="VPI  Password" required>
             <input type="submit" value="Sign In">
         </form>
-       
-      
     </div>
 </body>
 </html>

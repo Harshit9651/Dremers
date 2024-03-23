@@ -74,10 +74,25 @@ crossorigin="anonymous"></script></head>
       flex: 0 0 calc(100% - 1rem); /* Adjust width for mobile devices */
     }
   }
+  
+/* Default styles for the mobile navbar */
+.mobile-navbar {
+  display: none; /* Initially hide the navbar */
+}
+
+.mobile-navbar a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.mobile-navbar a:hover {
+  text-decoration: underline;
+}
 </style>
 
 
 <body>
+
   <div class="container">
     <div class="row hello row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
       <% for(let data of donerdata) { %>
@@ -102,5 +117,4 @@ crossorigin="anonymous"></script></head>
       <% } %>
     </div>
   </div>
-  
     </body>

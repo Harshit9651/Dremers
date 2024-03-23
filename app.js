@@ -1209,7 +1209,7 @@ res.redirect('/');
 
 })
 
-app.get('/adminReview',isAuthenticatedAdmin,async(req,res)=>{
+app.get('/adminReview',async(req,res)=>{
   const review = await Review.find();
   res.render('listings/adminReview.ejs',{review})
 })
@@ -1321,7 +1321,7 @@ app.post('/submit_review', upload.fields([
 
     console.log(savereview);
 
-    res.send("Review added successfully.");
+    res.redirect('/')
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("An error occurred while processing your request.");

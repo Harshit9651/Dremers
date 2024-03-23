@@ -439,13 +439,68 @@ footer {
     border-radius: 50%; /* Adjusted border radius for mobile */
   }
 }
+
+/* Default styles for the mobile navbar */
+.mobile-navbar {
+  display: none; /* Initially hide the navbar */
+}
+
+.mobile-navbar a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.mobile-navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+ /* Default styles for the mobile navbar */
+
+  .mobile-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height:60px;
+    background-color: #201b1b;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+
+}
+#scholer{
+  font-weight: bolder;
+  font-size: medium;
+}
+#home{
+font-weight: bolder;
+font-size: 1.5rem;
+color: aqua;
+}
+#addreview{
+  font-weight: bolder;
+  font-size: medium;
+}
+
   
 </style>
 
 
 <body>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <div class="mobile-navbar">
+    <a href="/scholarships" id="scholer"> <i class="fa-solid fa-indian-rupee-sign"></i> &nbsp; scholarship </a>
+    <a href="/" id="home"><i class="fa-solid fa-house"></i></a>
+    <a href="/review" id="addreview"> <i class="fa-solid fa-plus"></i> &nbsp; Review</a>
+  </div>
+  <!--
   <a href="/aboutus" class="about-me-btn" id="aboutMeBtn">scholerships</a>
+  -->
   <!-- Modal -->
 <div class="modal fade" id="educationLoanModal" tabindex="-1" role="dialog" aria-labelledby="educationLoanModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -601,6 +656,7 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
 
 <script>
   // Function to show the education loan modal after 5 seconds
+  /*
   setTimeout(function() {
     $('#educationLoanModal').modal('show');
   }, 5000);
@@ -613,7 +669,7 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
       if ($(e.target).hasClass('modal')) {
         $(this).modal('hide');
       }
-    });
+    });*/
 
 </script>
 <script>
@@ -626,7 +682,7 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
 
     if (currentScroll > lastScrollTop) {
       // Scroll down
-      aboutMeBtn.style.display = 'none';
+      aboutMeBtn.style.display = 'block';//none tha 
     } else {
       // Scroll up
       aboutMeBtn.style.display = 'block';
@@ -636,11 +692,41 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
   });
 
   // Event listener for the "About Me" button to navigate to another route
+  
   aboutMeBtn.addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default link behavior
     window.location.href = this.getAttribute('href'); // Navigate to the specified route
   });
 
+ 
+
+</script>
+
+
+<script>
+
+let lastScrollTopp = 0;
+  let aboutMeBtnn = document.getElementById('aboutMeBtn');
+  let mobileNavbar = document.querySelector('.mobile-navbar');
+  
+  window.addEventListener('scroll', function() {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  
+    if (currentScroll > lastScrollTopp) {
+      // Scroll down
+      aboutMeBtnn.style.display = 'none'; // Hide the "About Me" button when scrolling down
+      mobileNavbar.style.bottom = '-100px'; // Hide the navbar when scrolling down
+    } else {
+      // Scroll up
+      aboutMeBtnn.style.display = 'block'; // Show the "About Me" button when scrolling up
+      mobileNavbar.style.bottom = '0'; // Show the navbar when scrolling up
+    }
+  
+    lastScrollTopp = currentScroll;
+  });
+  </script>
+
+<script>
   // Function to automatically switch reviews every 5 seconds
   let slideIndex = 0;
   const slides = document.querySelectorAll('.review-slide');
@@ -655,10 +741,6 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
   }
 
   setInterval(showNextReview, 5000);
-
 </script>
-
-
-
 
 </body>
