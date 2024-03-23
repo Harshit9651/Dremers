@@ -342,35 +342,90 @@ footer {
   color: aqua;
   font-weight: 700;
 }
-/* Add this CSS to your existing styles or in a separate CSS file */
+
+/*
 .review-section {
-  margin-top: 5rem;
+  overflow: hidden;
+  background-color: aqua;
+  color: #dc3545;
 }
 
-.review {
-  max-width: 400px; /* Adjust this value as needed */
-  margin: 0 auto;
+.review-slide-container {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.review-slide {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
 }
 
 .reviewer-image {
-  width: 100px; /* Adjust this value as needed */
-  height: 100px; /* Adjust this value as needed */
+  width: 150px; 
+  height: 150px; 
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% ;
+  margin-bottom: 10px;
+}
+*/
+/*cusstom*/
+.review-section {
+  overflow: hidden;
+  background-color: #123147;
+  color: #ffffff;
+  padding: 50px 0;
+}
+
+.review-slide-container {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.review-slide {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.reviewer-image {
+  width: 150px; /* Adjust as needed */
+  height: 150px; /* Adjust as needed */
   border-radius: 50%;
   margin-bottom: 20px;
 }
 
-.blockquote {
-  font-size: 1.5rem;
-  font-style: italic;
-  color: #fff; /* Adjust text color as needed */
-  border-left: none;
-  margin: 0;
-  padding: 0;
+.review-rating {
+  margin-top: 10px;
 }
 
-.blockquote p {
-  margin: 0;
-  padding: 0;
+.star-rating {
+  display: flex;
+  justify-content: center;
+}
+
+.star-rating i {
+  color: #ffc107;
+  font-size: 24px;
+}
+
+.star-rating i:not(:last-child) {
+  margin-right: 5px;
 }
 
   
@@ -501,24 +556,30 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
   </div>
 </div>
 
+<!-- Add this section after your existing content, before the footer --><div class="review-section">
 <!-- Add this section after your existing content, before the footer -->
-<div class="review-section">
-  <div class="container">
-    <h2>Reviews</h2>
-    <div class="row">
-      <% for(let review of reviews) { %>
-        <div class="col-md-6">
-          <div class="review">
-            <img src="<%= review.photo %>" alt="Reviewer Photo" class="reviewer-image">
-            <blockquote>
-              <p><%= review.comment %></p>
-            </blockquote>
+<div class="review-section" id="reviewSection">
+  <div class="review-slide-container">
+    <% for(let review of reviews) { %>
+      <div class="review-slide">
+        <div class="review-content">
+          <img src="<%= review.photo %>" alt="Reviewer Photo" class="reviewer-image">
+          <div class="review-details"> 
+              <p class="review-name"> <b>Name: </b><%= review.name %></p>
+            <p class="review-role"><b>Role:</b><%= review.role %></p>
+            <p class="review-text"><%= review.review %></p>
+            <div class="star-rating">
+              <% for(let i=0; i<review.rating; i++) { %>
+                <i class="fas fa-star"></i>
+              <% } %>
+            </div>
           </div>
         </div>
-      <% } %>
-    </div>
+      </div>
+    <% } %>
   </div>
 </div>
+
 
 
     <!-- container-fluid-->
@@ -567,7 +628,25 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
     event.preventDefault(); // Prevent default link behavior
     window.location.href = this.getAttribute('href'); // Navigate to the specified route
   });
+
+  // Function to automatically switch reviews every 5 seconds
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.review-slide');
+  const slideContainer = document.querySelector('.review-slide-container');
+
+  function showNextReview() {
+    slideIndex++;
+    if (slideIndex >= slides.length) {
+      slideIndex = 0;
+    }
+    slideContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
+  }
+
+  setInterval(showNextReview, 5000);
+
 </script>
+
+
 
 
 </body>

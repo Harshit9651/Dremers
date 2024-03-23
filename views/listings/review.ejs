@@ -55,7 +55,7 @@ input[type="file"] {
 }
 
 button {
-    background-color: #007bff;
+    background-color: #aaaa2f;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #b2d518;
 }
 
 @media screen and (max-width: 600px) {
@@ -167,7 +167,7 @@ button:hover {
         }
 
         .file-upload input[type="file"]:focus + .file-upload-label {
-            outline: 1px solid #007bff;
+            outline: 1px solid #ff5100;
         }
 </style>
 <body>
@@ -183,7 +183,7 @@ button:hover {
         </select><br>
 
         <label for="review">Your Review:</label><br>
-        <textarea id="review" name="review" rows="4" required></textarea><br>
+        <textarea id="review" name="review" rows="4" minlength="50" maxlength="100" required></textarea><br>
 
         <label for="photo">Upload Photo:</label><br>
         <input type="file" id="photo" name="photo" accept="image/*" required><br>

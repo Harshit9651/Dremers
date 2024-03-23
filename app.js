@@ -221,8 +221,11 @@ app.get('/', async(req, res) => {
  const data = await Doner.find({}).limit(8);// yani desktop par 8 donor hi dikhane hai 
  const sdata = await Student.find({}).limit(4);
 
+ const reviews = await Review.find();
 
-      res.render('listings/index.ejs',{data,sdata,user: req.session.user });
+
+
+      res.render('listings/index.ejs',{data,sdata,user: req.session.user,reviews});
    //   console.log(sdata)
     // res.send(data)
 });
@@ -1276,7 +1279,9 @@ app.post('/submit_review', upload.fields([
 
     console.log(name, review, role, rating, photo);
     const Reviewstore = await new Review({ name, review, role, rating, photo });
-    console.log(Reviewstore);
+    const savereview =  await Reviewstore.save();
+
+    console.log(savereview);
 
     res.send("Review added successfully.");
   } catch (error) {
