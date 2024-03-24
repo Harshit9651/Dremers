@@ -494,6 +494,34 @@ color: aqua;
 .sidebar-btn:hover {
   background-color: #555;
 }
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+  z-index: 9999; /* Ensure it's on top of other content */
+  display: none; /* Initially hide the loader */
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 4px solid #f3f3f3; /* Light grey border */
+  border-top: 4px solid #3498db; /* Blue border for animation */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite; /* Rotate animation */
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 
 
 
@@ -536,6 +564,9 @@ color: aqua;
 }
   
 </style>
+<div id="loader">
+  <div class="spinner"></div>
+</div>
 
 
 <body>
@@ -828,4 +859,12 @@ window.addEventListener('scroll', function() {
 
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script>
+  window.addEventListener('load', function() {
+    // Hide the loader once the page is fully loaded
+    document.getElementById('loader').style.display = 'none';
+  });
+</script>
+
 </body>
+
