@@ -497,6 +497,43 @@ color: aqua;
 
 
 
+
+@media (min-width: 768px) {
+  .bottom-buttons {
+    display: flex; /* Show the buttons */
+  }
+
+  .bottom-buttons {
+  position: fixed;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  left: 5px;
+  right: 5px;
+  margin: 0 auto;
+  width: 100%; /* Adjust the width as needed */
+  z-index: 999;
+}
+
+.scholarship-btn,
+.add-review-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #8ad815;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+
+}
+
+.scholarship-btn:hover,
+.add-review-btn:hover {
+  background-color: #0056b3;
+}
+
+}
   
 </style>
 
@@ -532,22 +569,14 @@ click on <b>Click Now !</b> here some step that may help you to provide educatio
     </div>
   </div>
 </div>
+<!-- show in tab & laptops -->
+<div class="bottom-buttons">
+    <a href="/scholarshipsc">  <button class="scholarship-btn">Scholarship</button></a>
+<a href="/review">  <button class="add-review-btn">Add Review</button></a>
+</div>
 
 <!--slidbar laptop and tab -->
-<!-- Add this code inside your body tag, before the closing </body> tag -->
-<div class="sidebar">
-  <div class="sidebar-toggle" onclick="toggleSidebar()">
-    <!-- Icon to toggle the sidebar -->
-    <h1>hello ram ram</h1>
-    <i class="fas fa-bars"></i> <!-- Font Awesome bars icon -->
-  </div>
-  <div class="sidebar-content">
-    <!-- Buttons in the sidebar -->
-    <a href="/" class="sidebar-btn">Home</a>
-    <a href="/about" class="sidebar-btn">About</a>
-    <a href="/gallery" class="sidebar-btn">Gallery</a>
-  </div>
-</div>
+
 
 
   <div class="container-fluid ll">
@@ -778,6 +807,23 @@ function toggleSidebar() {
     sidebar.style.width = '250px';
   }
 }
+// Add the following code inside your <script> tag or JavaScript file
+  let lastScrollToppp = 0;
+let bottomButtons = document.querySelector('.bottom-buttons');
+
+window.addEventListener('scroll', function() {
+  let currentScroll = window.pageYOffset || document.documentElement.scrollToppp;
+
+  if (currentScroll > lastScrollToppp) {
+    // Scrolling down
+    bottomButtons.style.bottom = '-100px'; // Hide the buttons
+  } else {
+    // Scrolling up
+    bottomButtons.style.bottom = '20px'; // Show the buttons
+  }
+
+  lastScrollToppp = currentScroll;
+});
 
 
 </script>

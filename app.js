@@ -1130,9 +1130,14 @@ app.get('/admin', async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
-app.get('/admindonor',isAuthenticatedAdmin,async(req,res)=>{
+app.get('/admindonor',async(req,res)=>{
+  if(req.session.role=='admin'){
+
+  
   const donor = await Doner.find();
-  res.render('listings/admindonor.ejs',{donor})
+  res.render('listings/admindonor.ejs',{donor})}else{
+    res.redirect('/')
+  }
 })
 app.get('/admindeletedonor/:donorId',async(req,res)=>{
   try {
@@ -1147,9 +1152,13 @@ app.get('/admindeletedonor/:donorId',async(req,res)=>{
 }
 
 })
-app.get('/adminstudent',isAuthenticatedAdmin,async(req,res)=>{
+app.get('/adminstudent',async(req,res)=>{
+if(req.session.role =='admin'){
   const student = await Student.find();
-  res.render('listings/adminstudent.ejs',{student})
+  res.render('listings/adminstudent.ejs',{student})}
+  else{
+    res.redirect('/')
+  }
 })
 app.get('/admindeletestudent/:student_id',async(req,res)=>{
   try {
@@ -1165,9 +1174,12 @@ app.get('/admindeletestudent/:student_id',async(req,res)=>{
 
 })
 
-app.get('/adminsinup',isAuthenticatedAdmin,async(req,res)=>{
+app.get('/adminsinup',async(req,res)=>{
+  if(   req.session.role =='admin'){
   const sinup = await SinUp.find();
-  res.render('listings/adminsinup.ejs',{sinup})
+  res.render('listings/adminsinup.ejs',{sinup})}else{
+    res.redirect('/')
+  }
 })
 app.get('/admindeletesinup/:sinup_id',async(req,res)=>{
   try {
@@ -1199,6 +1211,8 @@ app.post("/adminsinIn",(req,res)=>{
 res.redirect('/');
     }
     else{
+      req.session.role = 'admin';
+    
       res.redirect('/admin');
     }
   }catch{
@@ -1210,8 +1224,13 @@ res.redirect('/');
 })
 
 app.get('/adminReview',async(req,res)=>{
+  if(   req.session.role =='admin'){
   const review = await Review.find();
-  res.render('listings/adminReview.ejs',{review})
+
+  res.render('listings/adminReview.ejs',{review})}
+  else{
+res.redirect('/')
+  }
 })
 app.get('/admindeletReview/:review_id',async(req,res)=>{
   try {
